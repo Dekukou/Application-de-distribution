@@ -100,6 +100,18 @@ class PackageController extends Controller
 		return ceil(sqrt(pow($newpos[0] - $pos[0], 2) + pow($newpos[1] - $pos[1], 2)));
 	}
 
+	private function linkUserPackage($mailmen, $package) {
+		UserPackage::create([
+			'user_uid' => $mailmen['uid'],
+			'package_uid' => $package[1]['uid'],
+			'last' => $mailmen['last'],
+			'dist' => $package[0],
+			'total_dist' => $package[0] + $mailmen['length'],
+			'done' => false,
+			'delivery_date' => date('Y_m_d-H-i-s')
+		]);
+	}
+
 	private function firstPackage($mailmens, $packages, $space, $mod) {
 		$add = 0;
     	$loop = 0;
@@ -108,20 +120,23 @@ class PackageController extends Controller
     		if ($loop == 0) {
     			$mailmen['last'] = $packages[0][1]['pos'];
     			$mailmen['tour'] = [$packages[0][1]['uid']];
-    			$mailmen['length'] = $packages[0][0];
     			$mailmen['bool'] = true;
+    			$this->linkUserPackage($mailmen, $packages[0]);
+    			$mailmen['length'] = $packages[0][0];
     			array_push($index, 0);
     		} elseif ($loop === count($mailmens) - 1 && count($mailmens) !== 1) {
     			$mailmen['last'] = $packages[count($packages) - 1][1]['pos'];
     			$mailmen['tour'] = [$packages[count($packages) - 1][1]['uid']];
-    			$mailmen['length'] = $packages[count($packages) - 1][0];
     			$mailmen['bool'] = true;
+    			$this->linkUserPackage($mailmen, $packages[count($packages) - 1]);
+    			$mailmen['length'] = $packages[count($packages) - 1][0];
     			array_push($index, count($packages) - 1);
     		} else {
 	    		$mailmen['last'] = $packages[$add][1]['pos'];
     			$mailmen['tour'] = [$packages[$add][1]['uid']];
-    			$mailmen['length'] = $packages[$add][0];
     			$mailmen['bool'] = true;
+    			$this->linkUserPackage($mailmen, $packages[$add]);
+    			$mailmen['length'] = $packages[$add][0];
     			array_push($index, $add);
     		}
     		$add += ($loop <= $mod) ? $space + 1 : $space;
@@ -140,7 +155,7 @@ class PackageController extends Controller
     	$packages = Package::inRandomOrder()->select('pos', 'uid')->where([['todo', '=', true]])->get();
     	
     	foreach ($packages as $package) {
-	    	UserPackage::where('package_uid', $package['uid'])->delete();
+	    	UserPackage::where([['package_uid', '=', $package['uid']], ['done', '=', false]])->delete();
     	}
 
     	$mailmens = User::inRandomOrder()->select('uid', 'home')->where([['role', '=', '0'], ['dispo', '=', true]])->get();
@@ -178,6 +193,8 @@ class PackageController extends Controller
     				if (!empty($packages)) {
 	    				$tmp = $this->sortDistance($packages, $mailmens[$i]['last']);
 	    				if ($this->calcDistanceTotal($tmp[0][1]['pos'], $mailmen['last'], $mailmen['home']) + $mailmen['length'] <= 240) {
+	    					$mailmen['last'] = $tmp[0][1]['pos'];
+    						$this->linkUserPackage($mailmen, $tmp[0]);
 	    					$tmp2 = $mailmen['tour'];
 	    					array_push($tmp2, $tmp[0][1]['uid']);
 	    					$mailmen['tour'] = $tmp2;

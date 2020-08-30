@@ -17,11 +17,12 @@ class UserPackage extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id',
+        'user_uid',
         'package_uid',
         'last',
         'dist',
         'total_dist',
+        'done',
         'deivery_date'
     ];
 
