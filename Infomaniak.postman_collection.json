@@ -161,7 +161,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"root@test.fr\",\n    \"password\": \"test1234\",\n    \"role\": 1,\n    \"x\": 35,\n    \"y\": 10\n}",
+							"raw": "{\n    \"email\": \"test1@test.fr\",\n    \"password\": \"test1234\",\n    \"role\": 0,\n    \"x\": 35,\n    \"y\": 10\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -347,9 +347,9 @@
 	],
 	"variable": [
 		{
-			"id": "81ad702d-3e49-4b22-813f-fc6b8b7fd292",
+			"id": "1237f61f-83f9-47f7-addd-5dac5a5dc050",
 			"key": "url",
-			"value": "127.0.0.1:8000/api"
+			"value": "92.222.76.5:8000/api"
 		}
 	],
 	"protocolProfileBehavior": {}
