@@ -18,15 +18,19 @@ Le point le plus complexe est de savoir comment attribuer le premier colis de la
 Avant d'expliquer la démarche utilisée, nous allons voir les différentes idées rencontrées avant le résultat final.
 
 - La toute première idée était de diviser la map en plusieurs radians en fonction du nombre de livreur pour la journée.
+
 `Problème rencontré:` Selon la disposition des colis, il est possible qu'un livreur ne soit associé à aucun colis.
 
 - Ensuite, trier les colis en fonction du centre de livraison et attribuer les colis le plus proche en priorité.
+
 `Problème rencontré:` Il y a de grandes chances que les colis se trouvant en bord de map ne soient jamais livrés.
 
 - À l'inverse, trier les colis en fonction du centre de livraison et attribuer les colis le plus éloignés en priorité.
+
 `Problème rencontré:` Il y a de grandes chances que les colis se trouvant proche du centre ne soient jamais livrés.
 
 - Une attribution aléatoire du premier colis pour chaque livreur.
+
 `Problème rencontré:` Cette attribution a peu de chances d'être efficace et il est également possible que les colis les plus éloignés ne soient jamais livrés.
 
 Maintenant nous allons expliquer l'idée utilisée et détailler ses avantages aux idées précédentes.
