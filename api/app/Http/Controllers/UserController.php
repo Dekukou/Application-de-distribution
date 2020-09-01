@@ -55,7 +55,8 @@ class UserController extends Controller
     public function authenticate(Request $request) {
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
-            'password' => 'required'
+            'password' => 'required',
+            'role' => 'required|in:0,1'
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -65,6 +66,7 @@ class UserController extends Controller
 
         $user = User::whereEmail(request('email'))
             ->wherePassword(hash('sha256', request('password')))
+            ->where('role', $request->get('role'))
             ->first();
 
         if (isset($user)) {
@@ -88,6 +90,7 @@ class UserController extends Controller
                 "message" => 'Ok',
             ], 200);
         }
+        
         return response()->json([
             "message" => "Error during user deletion",
         ], 400);

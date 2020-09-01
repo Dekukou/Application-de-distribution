@@ -4,15 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Package;
+use App\Models\Planning;
 use App\Models\UserPackage;
 use Illuminate\Support\Str;	
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class PackageController extends Controller
 {
 	public function createPackage(Request $request) {
-		
+
 		$validator = Validator::make($request->all(), [
             'x' => 'required|numeric|between:-56,56',
             'y' => 'required|numeric|between:-56,56',
@@ -22,6 +24,14 @@ class PackageController extends Controller
             return response()->json([
                 "message" => $validator->errors()->first()
             ], 400);
+        }
+
+		$user = Auth::user();
+
+        if ($user->role !== '1') {
+        	return response()->json([
+        		"message" => "Unauthorized"
+        	], 401);
         }
 
         $uid = 'pkg-' . Str::random(13);
@@ -34,9 +44,21 @@ class PackageController extends Controller
 
         $package->pos = [$request->get('x'), $request->get('y')];
 
-        $package->save();	
+        $package->save();
 
-        return response()->json($request->get('y'));
+        return response()->json([
+    		"message" => "Ok",
+    		"datas" => $package
+    	], 201);
+	}
+
+	public function getPackages() {
+		$packages = Package::get();
+
+		return response()->json([
+			"message" => "OK", 
+			"datas" => $packages
+		], 200);
 	}
 
 	public function choosePackage(Request $request) {
@@ -45,17 +67,189 @@ class PackageController extends Controller
             'bool' => 'required|boolean'
         ]);
 
+        if ($validator->fails()) {
+            return response()->json([
+                "message" => $validator->errors()->first()
+            ], 400);
+        }
+
 		$package = Package::where('uid', $request->get('uid'))->update(['todo' => $request->get('bool')]);
+
+		return response()->json([
+    		"message" => "Ok"
+    	], 202);
+	}
+
+	private function returnPackage($packages) {
+
+		$packages['length'] += $this->calcDistance($packages['home'], $packages['pos'][count($packages['pos']) - 1]);
+		$dist = 0;
+		for ($i = 0; $i <= count($packages['bool']) - 1 && $packages['bool'][$i] !== false; $i++);
+		for($j = 0; $j != $i; $j++) {
+				$dist += $packages['dist'][$j];
+		}
+		$packages['total'] = count($packages['pos']);
+		if ($i == count($packages['tour'])) {
+			$packages['package'] = "home";
+			$packages['x'] = $packages['home'][0];
+			$packages['y'] = $packages['home'][1];
+		} else {
+			$packages['package'] = $packages['tour'][$i];
+			$packages['x'] = $packages['pos'][$i][0];
+			$packages['y'] = $packages['pos'][$i][1];
+		}
+		$packages['actual'] = $i;
+		$packages['actual_dist'] = $dist;
+
+		unset($packages['dist']);
+		unset($packages['bool']);
+		unset($packages['pos']);
+		unset($packages['tour']);
+		unset($packages['home']);
+
+		return $packages;
 	}
 
 	public function delivery(Request $request) {
+		$user = Auth::user();
+
 		$validator = Validator::make($request->all(), [
             'uid' => 'required|exists:package,uid',
             'bool' => 'required|boolean'
         ]);
 
-		$package = Package::where('uid', $request->get('uid'))->update(['done' => $request->get('bool')]);
+        if ($validator->fails()) {
+            return response()->json([
+                "message" => $validator->errors()->first()
+            ], 400);
+        }
+
+        $packages = UserPackage::where([['package_uid', '=', $request->get('uid')], ['user_uid', '=', $user->uid]])->first();
+
+        if (!isset($packages)) {
+    		return response()->json([
+    			"message" => "Unauthorized"
+    		], 401);
+    	}
+
+		UserPackage::where('package_uid', $request->get('uid'))->update(['done' => $request->get('bool')]);
+
+		$packages = Planning::first();
+
+		$packages = $this->returnPackage($packages);
+
+		return response()->json([
+			"message" => "Ok", 
+			"datas" => $packages
+		], 200);
 	}
+
+	public function getPlanning() {
+    	$datas = Planning::select('uid', 'tour', 'length', 'home', 'pos')->get();
+
+    	foreach ($datas as $data) {
+    		$data['length'] += $this->calcDistance($data['home'], $data['pos'][count($data['pos']) - 1]);
+    		unset($data['home']);
+    		unset($data['pos']);
+    	}
+
+    	return response()->json([
+    		"message" => "Ok", 
+    		"datas" => $datas
+    	], 200);
+    }
+
+    public function getUserPlanning() {
+    	$user = Auth::user();
+
+    	$data = Planning::where('uid', $user->uid)->first();
+
+    	$data = $this->returnPackage($data);
+
+    	return response()->json([
+    		"message" => "Ok", 
+    		"datas" => $data
+    	], 200);
+    }
+
+    public function createPlanning() {
+    	$user = Auth::user();
+
+    	if ($user->role !== '1') {
+    		return response()->json([
+    			"message" => "Unauthorized"
+    		], 401);
+    	}
+
+    	$packages = Package::inRandomOrder()->select('pos', 'uid')->where([['todo', '=', true]])->get();
+    	
+    	foreach ($packages as $package) {
+	    	UserPackage::where([['package_uid', '=', $package['uid']], ['done', '=', false]])->delete();
+    	}
+
+    	$mailmens = User::inRandomOrder()->select('uid', 'home')->where([['role', '=', '0'], ['dispo', '=', true]])->get();
+
+    	if (count($mailmens) == 0) {
+    		return response()->json([
+    			"message" => "Aucun livreur sélectionné"
+    		], 400);
+    	}
+
+    	if (count($packages) == 0) {
+    		return response()->json([
+    			"message" => "Aucun colis sélectionné"
+    		], 400);
+    	}
+
+    	if (count($mailmens) > count($packages)) {
+    		return response()->json([
+    			"message" => "Nombre de livreur supérieur au nombre de colis"
+    		], 400);
+    	}
+
+    	$packages = $this->firstSortDistance($packages, [0, 0]);
+    	$space = intdiv(count($packages), count($mailmens));
+    	$mod = fmod(count($packages), count($mailmens));
+
+    	$result = $this->firstPackage($mailmens, $packages, $space, $mod);
+    	$mailmens = $result[0];
+    	$packages = $result[1];
+
+    	$loop = ($mod > 0) ? $space + 1 : $space;
+    	for ($i = 0; $i < $loop; $i++) { 
+    		foreach ($mailmens as $mailmen) {
+    			if ($mailmen['bool'] == true) {
+    				if (!empty($packages)) {
+	    				$tmp = $this->sortDistance($packages, $mailmens[$i]['last']);
+	    				if ($this->calcDistanceTotal($tmp[0][1]['pos'], $mailmen['last'], $mailmen['home']) + $mailmen['length'] <= 240) {
+	    					$mailmen['last'] = $tmp[0][1]['pos'];
+    						$this->linkUserPackage($mailmen, $tmp[0]);
+	    					$tmp2 = $mailmen['tour'];
+	    					array_push($tmp2, $tmp[0][1]['uid']);
+	    					$mailmen['tour'] = $tmp2;
+	    					$mailmen['length'] += $this->calcDistance($tmp[0][1]['pos'], $mailmen['last']);
+	    					unset($tmp[0]);
+	    					$packages = $tmp;
+	    				} else {
+	    					$mailmen['bool'] = false;
+	    				}
+	    			}
+    			}
+    		}
+    	}
+
+    	foreach ($mailmens as $mailmen) {
+    		$mailmen['length'] += $this->calcDistance($mailmen['home'], $mailmen['last']);
+    		unset($mailmen['home']);
+    		unset($mailmen['last']);
+    		unset($mailmen['bool']);
+    	}
+
+    	return response()->json([
+    		"message" => "Ok",
+    		"datas" => $mailmens
+    	], 201);
+    }
 
 	private function firstSortDistance($arr, $pos) {
 		$result = [];
@@ -150,72 +344,4 @@ class PackageController extends Controller
     	}
     	return [$mailmens, $packages];
 	}
-
-    public function createPlanning() {
-    	$packages = Package::inRandomOrder()->select('pos', 'uid')->where([['todo', '=', true]])->get();
-    	
-    	foreach ($packages as $package) {
-	    	UserPackage::where([['package_uid', '=', $package['uid']], ['done', '=', false]])->delete();
-    	}
-
-    	$mailmens = User::inRandomOrder()->select('uid', 'home')->where([['role', '=', '0'], ['dispo', '=', true]])->get();
-
-    	if (count($mailmens) == 0) {
-    		return response()->json([
-    			"message" => "Aucun livreur sélectionné"
-    		], 400);
-    	}
-
-    	if (count($packages) == 0) {
-    		return response()->json([
-    			"message" => "Aucun colis sélectionné"
-    		], 400);
-    	}
-
-    	if (count($mailmens) > count($packages)) {
-    		return response()->json([
-    			"message" => "Nombre de livreur supérieur au nombre de colis"
-    		], 400);
-    	}
-
-    	$packages = $this->firstSortDistance($packages, [0, 0]);
-    	$space = intdiv(count($packages), count($mailmens));
-    	$mod = fmod(count($packages), count($mailmens));
-
-    	$result = $this->firstPackage($mailmens, $packages, $space, $mod);
-    	$mailmens = $result[0];
-    	$packages = $result[1];
-
-    	$loop = ($mod > 0) ? $space + 1 : $space;
-    	for ($i = 0; $i < $loop; $i++) { 
-    		foreach ($mailmens as $mailmen) {
-    			if ($mailmen['bool'] == true) {
-    				if (!empty($packages)) {
-	    				$tmp = $this->sortDistance($packages, $mailmens[$i]['last']);
-	    				if ($this->calcDistanceTotal($tmp[0][1]['pos'], $mailmen['last'], $mailmen['home']) + $mailmen['length'] <= 240) {
-	    					$mailmen['last'] = $tmp[0][1]['pos'];
-    						$this->linkUserPackage($mailmen, $tmp[0]);
-	    					$tmp2 = $mailmen['tour'];
-	    					array_push($tmp2, $tmp[0][1]['uid']);
-	    					$mailmen['tour'] = $tmp2;
-	    					$mailmen['length'] += $this->calcDistance($tmp[0][1]['pos'], $mailmen['last']);
-	    					unset($tmp[0]);
-	    					$packages = $tmp;
-	    				} else {
-	    					$mailmen['bool'] = false;
-	    				}
-	    			}
-    			}
-    		}
-    	}
-
-    	foreach ($mailmens as $mailmen) {
-    		$mailmen['length'] += $this->calcDistance($mailmen['home'], $mailmen['last']);
-    		unset($mailmen['home']);
-    		unset($mailmen['last']);
-    		unset($mailmen['bool']);
-    	}
-
-    	return response()->json($mailmens);
-    }
 }

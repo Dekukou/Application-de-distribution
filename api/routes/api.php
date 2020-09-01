@@ -16,16 +16,20 @@ use Illuminate\Support\Facades\Route;
 
 Route::post("user", "UserController@register");
 Route::post("login", "UserController@authenticate");
-Route::get("createPlanning", "PackageController@createPlanning");
-Route::post("createPackage", "PackageController@createPackage");
-Route::put("choosePackage", "PackageController@choosePackage");
-Route::put("delivery", "PackageController@delivery");
-Route::get("deliverers", "UserController@getdeliverers");
+Route::get("getPlanning", "PackageController@getPlanning");
+Route::get("deliverers", "UserController@getDeliverers");
+Route::get("packages", "PackageController@getPackages");
 
 Route::group(["middleware" => "auth:api"], function() {
 	Route::get("user", "UserController@getUser");
 	Route::put("user", "UserController@updateUser");
 	Route::delete("user", "UserController@deleteUser");
-	
+	Route::put("delivery", "PackageController@delivery");
+
+	Route::post("createPackage", "PackageController@createPackage");
 	Route::put("chooseDeliverer", "UserController@dispoDeliveryMan");
+	Route::put("choosePackage", "PackageController@choosePackage");
+	Route::get("createPlanning", "PackageController@createPlanning");
+	Route::get("planning", "PackageController@getUserPlanning");
+	
 });

@@ -103,6 +103,29 @@ CREATE TABLE public.package_user
     REFERENCES public.user (uid) ON DELETE CASCADE
 );
 
+/* VIEW PLANNING */
+
+CREATE VIEW public.planning AS
+    SELECT u.uid,
+        u.home,
+        json_build_object('datas', ( SELECT array_agg(pu.package_uid ORDER BY pu.total_dist) AS array_agg
+            FROM package_user pu
+            WHERE pu.user_uid = u.uid AND pu.delivery_date = now()::date)) AS tour,
+        ( SELECT array_agg(pu.last ORDER BY pu.total_dist) AS array_agg
+            FROM package_user pu
+            WHERE pu.user_uid = u.uid AND pu.delivery_date = now()::date) AS pos,
+        json_build_object('datas', ( SELECT array_agg(pu.done ORDER BY pu.total_dist) AS array_agg
+            FROM package_user pu
+            WHERE pu.user_uid = u.uid AND pu.delivery_date = now()::date)) AS bool,
+        ( SELECT array_agg(pu.dist ORDER BY pu.total_dist) AS array_agg
+            FROM package_user pu
+            WHERE pu.user_uid = u.uid AND pu.delivery_date = now()::date) AS dist,
+        ( SELECT max(pu.total_dist) AS max
+            FROM package_user pu
+            WHERE pu.user_uid = u.uid AND pu.delivery_date = now()::date) AS length
+    FROM "user" u
+    WHERE u.dispo = true;
+
 
 
 

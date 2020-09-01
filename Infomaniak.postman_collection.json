@@ -1,0 +1,356 @@
+{
+	"info": {
+		"_postman_id": "48456932-28ec-4083-a8e0-5d45b78b800a",
+		"name": "Infomaniak",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Packages",
+			"item": [
+				{
+					"name": "createPlanning",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/createPlanning",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"createPlanning"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createPackage",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"x\": -45,\n    \"y\": -34.6\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/createPackage",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"createPackage"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "choosePackage",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"uid\": \"pkg-tba8WPzMfopN7\",\n    \"bool\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/choosePackage",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"choosePackage"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delivery",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"uid\": \"pkg-1Omp8G235TpCQ\",\n    \"bool\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/delivery",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"delivery"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getPlanning",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/getPlanning",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"getPlanning"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "planning",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/planning",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"planning"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getPackages",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"root@test.fr\",\n    \"password\": \"test1234\",\n    \"role\": 1,\n    \"x\": 35,\n    \"y\": 10\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/user",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test2@test.fr\",\n    \"password\": \"test1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getUser",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/user",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateUser",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test1@test.fr\",\n    \"x\": 15,\n    \"y\": 15\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/user",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "chooseDelivery",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"uid\": \"mm-2vjAs974zhpvj\",\n    \"bool\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/chooseDeliverer",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"chooseDeliverer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteUser",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/user",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getUsers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/deliverers",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"deliverers"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiMGFkNTBiZmE2ZTRjNGMzNWNhNWI2ZWUyNDY3MjdjMmQxYzkyMjM0ZDVkOTczODgwZmMxYTAyMWRhMTJlNWEyOTUyODJmNjMyMmVlZjBjYTAiLCJpYXQiOjE1OTg5NTI1OTMsIm5iZiI6MTU5ODk1MjU5MywiZXhwIjoxNjMwNDg4NTkzLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.b_I3l4_Cyw5XGXlGSqfCDx_UHoH3BMsvdL5sC05eOUc9bCZEnorptvxeWODxJZSu2goiVN5Oxra8yrd6SEgZCCj2Z5TPQi7hH4W9siNJ6ynYXSZMxjmGHvFlMOZ6Gq8zfqT2a1PVWwj6gk_-LF0q6xRprWh2retddX8DkCWMivnPJ5YzRRjA27BI3FyhQ3YyAvmYOkj4nc8UjdQs9-hpFrtd00ARjBHmZksVKEdTjBbBp_KK07Cvdhdk2NK2klzO19dC72xTAKgjLQ96AIlaNzAzCpF5pP13krAw12zbzEzu9lOHgTe5fZnlJZdBDVABHH0SCpyWwygGB-V79DA9mpPPPn3x20i-KgGwVVyxYPtP_tJ1N2AyMBV1EjhGpdsV77GNXREH5IloJjt9Gux0EoFwikm039HcnOR0zOcLmzEQcBf1bWx4zQtLRbk81Fpaaf1c_tvcyh_OotaGWL1_uRZ_hJTNsJLJKfaVzmxTZ5GrviBIbC8aD3SDa5eKTqudG_MRFNevxdjqcd8t9tFzMnTLZ4Aj0VW8nsJaQ1yRbeOpkje7xP_Dy-uHkCrx5Qv_xULyi4SzfT3jqefahZ8K4eWEI5obpgX3POJ_HtKMqDtab-iGC8cI5zzcQo0lnDg2smSDgAqL81PAOhg9ddJ8uV16RSnRCL3wwYk02BvZmu4",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "059586bc-f1ab-45e7-8791-f4d672f070ca",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "8907fbf3-a333-45b2-9f04-85642ae2d361",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "81ad702d-3e49-4b22-813f-fc6b8b7fd292",
+			"key": "url",
+			"value": "127.0.0.1:8000/api"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
