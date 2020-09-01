@@ -30,7 +30,7 @@ Avant d'expliquer la démarche utilisée, nous allons voir les différentes idé
 `Problème rencontré:` Cette attribution a peu de chances d'être efficace et il est également possible que les colis les plus éloignés ne soient jamais livrés.
 
 - Trier les colis en fonction du domicile de chaque livreur et remplir le tableau dans le sens opposé (commencer par attribuer les colis livrés en dernier).
-`Problème rencontré:` Pas assez original.
+`Problème rencontré:` Méthode la plus optimisé, mais pas assez original.
 
 Maintenant nous allons expliquer l'idée utilisée et détailler ses avantages comparés aux idées précédentes.
 
