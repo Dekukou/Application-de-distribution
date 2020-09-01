@@ -48,4 +48,4 @@ Pour la suite, chaque livreur s'occupera du colis le plus proche du point où il
 
 Chaque service contient un Readme qui lui est propre en ce qui concerne son installation et son fonctionnement.
 
-Une collection `Postman` est disponible à la racine du proojet pour voir les routes utilisées ainsi que leur retour.
+Une collection `Postman` est disponible à la racine du projet pour voir les routes utilisées ainsi que leur retour.
