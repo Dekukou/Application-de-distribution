@@ -164,6 +164,13 @@ class PackageController extends Controller
 
     	$data = Planning::where('uid', $user->uid)->first();
 
+    	if ($data == null) {
+            return response()->json([
+                "message" => "Planning vide",
+                "data" => $data
+            ], 404);  
+        }
+
     	$data = $this->returnPackage($data);
 
     	return response()->json([
