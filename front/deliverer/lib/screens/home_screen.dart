@@ -1,26 +1,18 @@
 import 'dart:ui';
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ProfilScreen extends StatefulWidget {
+class HomeScreen extends StatefulWidget {
 
   @override
-  _ProfilScreenState createState() => _ProfilScreenState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
 final email = TextEditingController();
 final password = TextEditingController();
-
-// Function logout
-void logout(context) async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setString('token', null);
-    Navigator.of(context).pushNamed('/login');
-}
 
 Widget _myText(value, size, pos) {
   return Align(
@@ -85,39 +77,8 @@ Widget _buildLogo(context) {
   );
 }
 
-// Widget Logout Button
-Widget _buildLogoutButton(context) {
-  return Column(
-    children: <Widget>[
-      Container(
-        padding: EdgeInsets.symmetric(vertical: 25.0, horizontal: 10),
-        width: double.infinity,
-        child: RaisedButton(
-          elevation: 5.0,
-          onPressed: () => logout(context),
-          padding: EdgeInsets.all(15.0),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30.0),
-          ),
-          color: Color(0xFF00838F),
-          child: Text(
-            'SE DÉCONNECTER',
-            style: TextStyle(
-              color: Colors.white,
-              letterSpacing: 1.5,
-              fontSize: 18.0,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'OpenSans',
-            ),
-          ),
-        ),
-      ),
-    ],
-  );
-}
-
-class _ProfilScreenState extends State<ProfilScreen> {
-  int _selectedIndex = 1;
+class _HomeScreenState extends State<HomeScreen> {
+  int _selectedIndex = 0;
   var planning;
 
   void _onItemTapped(int index) async {
@@ -125,15 +86,37 @@ class _ProfilScreenState extends State<ProfilScreen> {
       print(index);
       _selectedIndex = index;
     });
-    if (index == 0) {
-      Navigator.of(context).pushNamed('/home');
+    if (index == 1) {
+      Navigator.of(context).pushNamed('/profil');
     }
   }
 
   @override
   void initState() {
     super.initState();
+    _connected();
     _getPlanning();
+  }
+
+  void delivered() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+    http.Response response = await http.put(
+      Uri.encodeFull("http://92.222.76.5:8000/api/delivery"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          "Authorization": 'Bearer ' + token
+        },
+        body: jsonEncode({
+          'uid': planning['datas']['package'],
+          'bool': true
+        }
+      )
+    );
+    var res = json.decode(response.body);
+    setState(() {
+        planning = res;
+    });
   }
 
   void _getPlanning() async {
@@ -149,7 +132,16 @@ class _ProfilScreenState extends State<ProfilScreen> {
     setState(() {
         planning = res;
     });
-}
+  }
+
+  void _connected() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
+    if (token == null) {
+      Navigator.of(context).pushNamed('/login');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -161,7 +153,7 @@ class _ProfilScreenState extends State<ProfilScreen> {
           child: Stack(
             children: <Widget>[
               _buildBackground(),
-              new Flexible(child: new MyContainer(planning: planning))
+              new Flexible(child: new MyContainer(planning: planning, delivered: delivered)),
             ],
           ),
         ),
@@ -188,8 +180,9 @@ class _ProfilScreenState extends State<ProfilScreen> {
 
 // ignore: must_be_immutable
 class MyContainer extends StatelessWidget {
+  final VoidCallback delivered;
   var planning;
-  MyContainer({this.planning});
+  MyContainer({this.planning, this.delivered});
 
   @override
   Widget build(BuildContext context) {
@@ -208,7 +201,7 @@ class MyContainer extends StatelessWidget {
             SizedBox(height: 40),
             _myText("${planning['message']}", 50.0, Alignment.center),
             _myText("Profil", 50.0, Alignment.center),
-            _buildLogoutButton(context),
+           // _buildLogoutButton(context),
           ]
         ),
       )
@@ -242,9 +235,9 @@ class MyContainer extends StatelessWidget {
               ]
             ),
           ),
-          SizedBox(height: 40),
+          // SizedBox(height: 10),
           _myText("${planning['datas']['actual']} / ${planning['datas']['total']}", 22.0, Alignment.center),
-          _buildLogoutButton(context),
+          new Flexible(child: new ButtonDelivered(delivered))
         ],
       ),
     ) : new Container(
@@ -277,10 +270,47 @@ class MyContainer extends StatelessWidget {
               ]
             ),
           ),
-          SizedBox(height: 40),
+          SizedBox(height: 20),
           _myText("${planning['datas']['actual']} / ${planning['datas']['total']}", 22.0, Alignment.center),
         ],
       ),
+    );
+  }
+}
+
+class ButtonDelivered extends StatelessWidget {
+  final VoidCallback delivered;
+
+  ButtonDelivered(this.delivered);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        Container(
+          padding: EdgeInsets.symmetric(vertical: 25.0, horizontal: 10),
+          width: double.infinity,
+          child: RaisedButton(
+            elevation: 5.0,
+            onPressed: this.delivered,
+            padding: EdgeInsets.all(15.0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
+            ),
+            color: Color(0xFF00838F),
+            child: Text(
+              'LIVRÉ',
+              style: TextStyle(
+                color: Colors.white,
+                letterSpacing: 1.5,
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'OpenSans',
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

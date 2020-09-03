@@ -1,6 +1,6 @@
 {
-    "name": "center",
-    "short_name": "center",
+    "name": "deliverer",
+    "short_name": "deliverer",
     "start_url": ".",
     "display": "minimal-ui",
     "background_color": "#0175C2",
