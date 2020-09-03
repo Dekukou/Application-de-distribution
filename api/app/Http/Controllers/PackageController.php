@@ -164,10 +164,10 @@ class PackageController extends Controller
 
     	$data = Planning::where('uid', $user->uid)->first();
 
-    	if ($data == null) {
+    	if ($data == null || $data->length == null) {
             return response()->json([
                 "message" => "Planning vide",
-                "data" => $data
+                "data" => null
             ], 404);  
         }
 
