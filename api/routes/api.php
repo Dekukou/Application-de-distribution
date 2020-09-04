@@ -22,7 +22,7 @@ Route::get("packages", "PackageController@getPackages");
 
 Route::group(["middleware" => "auth:api"], function() {
 	Route::get("user", "UserController@getUser");
-	Route::put("user", "UserController@updateUser");
+	Route::post("user/update", "UserController@updateUser");
 	Route::delete("user", "UserController@deleteUser");
 	Route::put("delivery", "PackageController@delivery");
 
