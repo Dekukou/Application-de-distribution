@@ -55,7 +55,7 @@ class PackageController extends Controller
 	public function getPackages() {
 		$packages = Package::get();
 
-        if (count($pacckages) == 0) {
+        if (count($packages) == 0) {
             return response()->json([
                 "message" => "Aucun colis dans la DB",
                 "datas" => null,
