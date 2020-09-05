@@ -53,7 +53,7 @@ class PackageController extends Controller
 	}
 
 	public function getPackages() {
-		$packages = Package::get();
+		$packages = Package::orderBy('id', 'asc')->get();
 
         if (count($packages) == 0) {
             return response()->json([
@@ -156,16 +156,14 @@ class PackageController extends Controller
 	public function getPlanning() {
     	$datas = Planning::select('uid', 'tour', 'length', 'home', 'pos')->get();
 
-        $i = 0;
+        $tmp = [];
     	foreach ($datas as $data) {
-            if ($data['pos'] == null) {
-                unset($datas[$i]);
-            } else {
+            if ($data['pos'] != null) {
         		$data['length'] += $this->calcDistance($data['home'], $data['pos'][count($data['pos']) - 1]);
         		unset($data['home']);
         		unset($data['pos']);
+                array_push($tmp, $data);
             }
-            $i++;
     	}
 
         if (count($datas) == 0) {
@@ -178,7 +176,7 @@ class PackageController extends Controller
 
     	return response()->json([
     		"message" => "Ok", 
-    		"datas" => $datas,
+    		"datas" => $tmp,
             "count" => count($datas)
     	], 200);
     }

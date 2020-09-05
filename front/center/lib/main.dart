@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:center/screens/login_screen.dart';
-import 'package:center/screens/register_screen.dart';
 import 'package:center/screens/home_screen.dart';
+import 'package:center/screens/login_screen.dart';
 import 'package:center/screens/profil_screen.dart';
+import 'package:center/screens/register_screen.dart';
+import 'package:center/screens/packages_screen.dart';
+import 'package:center/screens/deliverers_screen.dart';
 import 'package:center/screens/new_package_screen.dart';
 
 void main() => runApp(MyApp());
@@ -16,11 +18,13 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: HomeScreen(),
       routes: <String, WidgetBuilder>{
-        '/login': (BuildContext context) => LoginScreen(),
-        '/register': (BuildContext context) => RegisterScreen(),
         '/home': (BuildContext context) => HomeScreen(),
+        '/login': (BuildContext context) => LoginScreen(),
         '/profil': (BuildContext context) => ProfilScreen(),
+        '/register': (BuildContext context) => RegisterScreen(),
+        '/packages': (BuildContext context) => PackagesScreen(),
         '/newPackage': (BuildContext context) => NewPackageScreen(),
+        '/deliverers': (BuildContext context) => DeliverersScreen(),
       },
     );
   }

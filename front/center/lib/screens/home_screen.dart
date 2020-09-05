@@ -79,24 +79,6 @@ Widget _myText(value, size, pos) {
               ))));
 }
 
-Widget _progressBar(context, planning) {
-  return Container(
-    margin: EdgeInsets.symmetric(vertical: 20),
-    width: MediaQuery.of(context).size.width * 0.85,
-    height: 20,
-    child: ClipRRect(
-      borderRadius: BorderRadius.all(Radius.circular(10)),
-      child: LinearProgressIndicator(
-        value: ((planning['datas']['actual_dist'] * 100) /
-                planning['datas']['length']) /
-            100,
-        valueColor: new AlwaysStoppedAnimation<Color>(Colors.teal),
-        backgroundColor: Color(0xffD6D6D6),
-      ),
-    ),
-  );
-}
-
 // Set App Background
 Widget _buildBackground() {
   return Container(
@@ -118,14 +100,6 @@ Widget _buildBackground() {
   );
 }
 
-// Widget Logo Image
-Widget _buildLogo(context) {
-  return Image.asset(
-    'assets/logos/logo.png',
-    height: MediaQuery.of(context).size.height * 0.25,
-  );
-}
-
 class _HomeScreenState extends State<HomeScreen> {
   Future<Planning> futurePlanning;
   int _selectedIndex = 0;
@@ -137,10 +111,13 @@ class _HomeScreenState extends State<HomeScreen> {
       _selectedIndex = index;
     });
     if (index == 1) {
-      Navigator.of(context).pushNamed('/profil');
-    }
-    if (index == 2) {
+      Navigator.of(context).pushNamed('/deliverers');
+    } else if (index == 2) {
+      Navigator.of(context).pushNamed('/packages');
+    } else if (index == 3) {
       Navigator.of(context).pushNamed('/newPackage');
+    } else if (index == 1) {
+      Navigator.of(context).pushNamed('/profil');
     }
   }
 
@@ -235,6 +212,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         backgroundColor: Color(0xFF545454),
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -242,12 +220,20 @@ class _HomeScreenState extends State<HomeScreen> {
             title: Text('Accueil'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.perm_identity),
-            title: Text('Profil'),
+            icon: Icon(Icons.motorcycle),
+            title: Text('Livreurs'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.local_post_office),
+            title: Text('Colis'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.playlist_add),
-            title: Text('Add Colis'),
+            title: Text('+Colis'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.perm_identity),
+            title: Text('Profil'),
           ),
         ],
         currentIndex: _selectedIndex,

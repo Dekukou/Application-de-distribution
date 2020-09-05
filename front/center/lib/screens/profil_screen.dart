@@ -345,7 +345,7 @@ class _ProfilScreenState extends State<ProfilScreen> {
   final emailController = new TextEditingController();
   final xController = new TextEditingController();
   final yController = new TextEditingController();
-  int _selectedIndex = 1;
+  int _selectedIndex = 4;
   var user;
 
   void _onItemTapped(int index) async {
@@ -355,8 +355,11 @@ class _ProfilScreenState extends State<ProfilScreen> {
     });
     if (index == 0) {
       Navigator.of(context).pushNamed('/home');
-    }
-    if (index == 2) {
+    } else if (index == 1) {
+      Navigator.of(context).pushNamed('/deliverers');
+    } else if (index == 2) {
+      Navigator.of(context).pushNamed('/packages');
+    } else if (index == 3) {
       Navigator.of(context).pushNamed('/newPackage');
     }
   }
@@ -380,7 +383,7 @@ class _ProfilScreenState extends State<ProfilScreen> {
     var res = json.decode(response.body);
     print(res);
     setState(() {
-      user = res['data'];
+      user = res['datas'];
       emailController.text = user['email'];
       xController.text = user['home'][0].toString();
       yController.text = user['home'][1].toString();
@@ -435,6 +438,7 @@ class _ProfilScreenState extends State<ProfilScreen> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         backgroundColor: Color(0xFF545454),
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -442,12 +446,20 @@ class _ProfilScreenState extends State<ProfilScreen> {
             title: Text('Accueil'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.perm_identity),
-            title: Text('Profil'),
+            icon: Icon(Icons.motorcycle),
+            title: Text('Livreurs'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.local_post_office),
+            title: Text('Colis'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.playlist_add),
-            title: Text('Création'),
+            title: Text('+Colis'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.perm_identity),
+            title: Text('Profil'),
           ),
         ],
         currentIndex: _selectedIndex,

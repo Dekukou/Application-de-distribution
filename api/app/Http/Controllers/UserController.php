@@ -113,7 +113,7 @@ class UserController extends Controller
     }
 
     public function getDeliverers() {
-        $users = User::where('role', '0')->get();
+        $users = User::where('role', '0')->orderBy('id', 'asc')->get();
 
         if (count($users) == 0) {
             return response()->json([

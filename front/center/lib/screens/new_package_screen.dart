@@ -28,7 +28,7 @@ void createPackage(context) async {
   );
   var res = json.decode(response.body);
   if (response.statusCode == 201) {
-    _showAlert(context, "Succes", res['message']);
+    _showAlert(context, "Success", res['message']);
   } else {
     _showAlert(context, "Error", res['message']);
   }
@@ -84,6 +84,7 @@ Widget _buildXZone() {
       Container(
         alignment: Alignment.centerLeft,
         decoration: kBoxDecorationStyle,
+        width: 120.0,
         height: 60.0,
         child: TextField(
           controller: x,
@@ -101,7 +102,7 @@ Widget _buildXZone() {
   );
 }
 
-Widget _buildYNameZone() {
+Widget _buildYZone() {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
@@ -113,6 +114,7 @@ Widget _buildYNameZone() {
       Container(
         alignment: Alignment.centerLeft,
         decoration: kBoxDecorationStyle,
+        width: 120.0,
         height: 60.0,
         child: TextField(
           controller: y,
@@ -161,34 +163,8 @@ Widget _buildNewPackageButton(context) {
   );
 }
 
-// Widget allant à la page d'inscription
-Widget _buildGoToLogin(context) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.end,
-    children: <Widget>[
-      GestureDetector(
-        onTap: () => Navigator.of(context).pushNamed('/login'),
-        child: RichText(
-          text: TextSpan(
-            children: [
-              TextSpan(
-                text: "J'ai déjà un compte",
-                style: TextStyle(
-                    color: Colors.white,
-                    letterSpacing: 0.9,
-                    fontSize: 15,
-                    decoration: TextDecoration.underline),
-              ),
-            ],
-          ),
-        ),
-      ),
-    ],
-  );
-}
-
 class _NewPackageScreenState extends State<NewPackageScreen> {
-  int _selectedIndex = 2;
+  int _selectedIndex = 3;
 
   void _onItemTapped(int index) async {
     setState(() {
@@ -197,8 +173,11 @@ class _NewPackageScreenState extends State<NewPackageScreen> {
     });
     if (index == 0) {
       Navigator.of(context).pushNamed('/home');
-    }
-    if (index == 1) {
+    } else if (index == 1) {
+      Navigator.of(context).pushNamed('/deliverers');
+    } else if (index == 2) {
+      Navigator.of(context).pushNamed('/packages');
+    } else if (index == 4) {
       Navigator.of(context).pushNamed('/profil');
     }
   }
@@ -233,9 +212,14 @@ class _NewPackageScreenState extends State<NewPackageScreen> {
                             fontWeight: FontWeight.bold,
                           )),
                       SizedBox(height: 30.0),
-                      _buildXZone(),
-                      SizedBox(height: 20),
-                      _buildYNameZone(),
+                      Container(
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              _buildXZone(),
+                              _buildYZone(),
+                            ]),
+                      ),
                       SizedBox(height: 20),
                       _buildNewPackageButton(context),
                     ],
@@ -247,6 +231,7 @@ class _NewPackageScreenState extends State<NewPackageScreen> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         backgroundColor: Color(0xFF545454),
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -254,12 +239,20 @@ class _NewPackageScreenState extends State<NewPackageScreen> {
             title: Text('Accueil'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.perm_identity),
-            title: Text('Profil'),
+            icon: Icon(Icons.motorcycle),
+            title: Text('Livreurs'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.local_post_office),
+            title: Text('Colis'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.playlist_add),
-            title: Text('Add Colis'),
+            title: Text('+Colis'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.perm_identity),
+            title: Text('Profil'),
           ),
         ],
         currentIndex: _selectedIndex,
