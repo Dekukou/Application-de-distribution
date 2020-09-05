@@ -103,7 +103,7 @@ class UserController extends Controller
         if ($user !== null) {
             return response()->json([
                 "message" => "Ok",
-                "data" => $user
+                "datas" => $user
             ], 200);  
         }
 
@@ -115,15 +115,18 @@ class UserController extends Controller
     public function getDeliverers() {
         $users = User::where('role', '0')->get();
 
-        if (empty($users[0])) {
+        if (count($users) == 0) {
             return response()->json([
-                'message' => 'Not found'
+                "message" => "Aucun livreur dans la DB",
+                "datas" => null,
+                "count" => 0
             ], 404);
         }
         
         return response()->json([
-            'message' => 'Ok', 
-            'data' => $users
+            "message" => "Ok", 
+            "datas" => $users,
+            "count" => count($users)
         ], 200);
     }
 
@@ -164,7 +167,7 @@ class UserController extends Controller
 
         return response()->json([
             "message" => "Ok",
-            "data" => $user,
+            "datas" => $user,
         ], 200);
     }
 
@@ -194,7 +197,7 @@ class UserController extends Controller
 
     	return response()->json([
     		"message"=> "Ok", 
-    		"data" => $user
+    		"datas" => $user
     	], 200);
     }
 }

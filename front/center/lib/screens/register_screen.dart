@@ -1,45 +1,41 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
+import 'package:center/utilities/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:planning_jump/utilities/constants.dart';
-
 
 class RegisterScreen extends StatefulWidget {
-
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
 }
 
 final email = TextEditingController();
 final password = TextEditingController();
-final firstname = TextEditingController();
-final lastname = TextEditingController();
-final language = TextEditingController();
+final x = TextEditingController();
+final y = TextEditingController();
 
 // Fonction register
 void register(context) async {
   http.Response response = await http.post(
-    Uri.encodeFull("http://54.38.32.140/api/v1/user"),
+    Uri.encodeFull("http://92.222.76.5:8000/api/user"),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
     body: jsonEncode(<String, String>{
       'email': email.text,
       'password': password.text,
-      'firstname': firstname.text,
-      'lastname': lastname.text,
-      'language': language.text
+      'x': x.text,
+      'y': y.text,
+      'role': '1'
     }),
   );
   print(response.statusCode);
-  if (response.statusCode == 200) {
+  if (response.statusCode == 201) {
     var res = json.decode(response.body);
-    print(res['data']['oauth_token']);
+    print(res['data']['token']);
     final prefs = await SharedPreferences.getInstance();
-    prefs.setString('token', res['data']['oauth_token']);
+    prefs.setString('token', res['data']['token']);
     Navigator.of(context).pushNamed('/home');
   } else {
     _showAlert(context);
@@ -47,14 +43,13 @@ void register(context) async {
 }
 
 void _showAlert(BuildContext context) {
-      showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
+  showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
             title: Text("Erreur"),
             content: Text("Veuillez remplir tous les champs"),
-          )
-      );
-    }
+          ));
+}
 
 // Set App Background
 Widget _buildBackground() {
@@ -66,10 +61,10 @@ Widget _buildBackground() {
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
         colors: [
-            Color(0xFF00939F),
-            Color(0xFF545454),
-            Color(0xFF424242),
-            Color(0xFF303030),
+          Color(0xFF00939F),
+          Color(0xFF545454),
+          Color(0xFF424242),
+          Color(0xFF303030),
         ],
         stops: [0.1, 0.3, 0.6, 0.9],
       ),
@@ -104,24 +99,23 @@ Widget _buildEmailZone() {
           keyboardType: TextInputType.emailAddress,
           style: TextStyle(color: Colors.white),
           decoration: InputDecoration(
-            border: InputBorder.none,
-            contentPadding: EdgeInsets.only(top: 14.0),
-            prefixIcon: Icon(Icons.email, color: Colors.white),
-            hintText: 'Entrez votre email',
-            hintStyle: kHintTextStyle
-          ),
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.only(top: 14.0),
+              prefixIcon: Icon(Icons.email, color: Colors.white),
+              hintText: 'Entrez votre email',
+              hintStyle: kHintTextStyle),
         ),
       ),
     ],
   );
 }
 
-Widget _buildFNameZone() {
+Widget _buildXZone() {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
       Text(
-        'Prénom',
+        'X',
         style: kLabelStyle,
       ),
       SizedBox(height: 10.0),
@@ -130,28 +124,27 @@ Widget _buildFNameZone() {
         decoration: kBoxDecorationStyle,
         height: 60.0,
         child: TextField(
-          controller: firstname,
+          controller: x,
           keyboardType: TextInputType.text,
           style: TextStyle(color: Colors.white),
           decoration: InputDecoration(
-            border: InputBorder.none,
-            contentPadding: EdgeInsets.only(top: 14.0),
-            prefixIcon: Icon(Icons.person, color: Colors.white),
-            hintText: 'Entrez votre prénom',
-            hintStyle: kHintTextStyle
-          ),
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.only(top: 14.0),
+              prefixIcon: Icon(Icons.person, color: Colors.white),
+              hintText: 'Entrez la coordonnée X',
+              hintStyle: kHintTextStyle),
         ),
       ),
     ],
   );
 }
 
-Widget _buildLNameZone() {
+Widget _buildYNameZone() {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
       Text(
-        'Nom',
+        'Y',
         style: kLabelStyle,
       ),
       SizedBox(height: 10.0),
@@ -160,46 +153,15 @@ Widget _buildLNameZone() {
         decoration: kBoxDecorationStyle,
         height: 60.0,
         child: TextField(
-          controller: lastname,
+          controller: y,
           keyboardType: TextInputType.text,
           style: TextStyle(color: Colors.white),
           decoration: InputDecoration(
-            border: InputBorder.none,
-            contentPadding: EdgeInsets.only(top: 14.0),
-            prefixIcon: Icon(Icons.person, color: Colors.white),
-            hintText: 'Entrez votre nom',
-            hintStyle: kHintTextStyle
-          ),
-        ),
-      ),
-    ],
-  );
-}
-
-Widget _buildLanguageZone() {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: <Widget>[
-      Text(
-        'Langue',
-        style: kLabelStyle,
-      ),
-      SizedBox(height: 10.0),
-      Container(
-        alignment: Alignment.centerLeft,
-        decoration: kBoxDecorationStyle,
-        height: 60.0,
-        child: TextField(
-          controller: language,
-          keyboardType: TextInputType.text,
-          style: TextStyle(color: Colors.white),
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            contentPadding: EdgeInsets.only(top: 14.0),
-            prefixIcon: Icon(Icons.language, color: Colors.white),
-            hintText: 'Entrez votre langue',
-            hintStyle: kHintTextStyle
-          ),
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.only(top: 14.0),
+              prefixIcon: Icon(Icons.person, color: Colors.white),
+              hintText: 'Entrez la coordonnée Y',
+              hintStyle: kHintTextStyle),
         ),
       ),
     ],
@@ -225,12 +187,11 @@ Widget _buildPasswordZone() {
           obscureText: true,
           style: TextStyle(color: Colors.white),
           decoration: InputDecoration(
-            border: InputBorder.none,
-            contentPadding: EdgeInsets.only(top: 14.0),
-            prefixIcon: Icon(Icons.lock, color: Colors.white),
-            hintText: 'Entrez votre mot de passe',
-            hintStyle: kHintTextStyle
-          ),
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.only(top: 14.0),
+              prefixIcon: Icon(Icons.lock, color: Colors.white),
+              hintText: 'Entrez votre mot de passe',
+              hintStyle: kHintTextStyle),
         ),
       ),
     ],
@@ -281,11 +242,10 @@ Widget _buildGoToLogin(context) {
               TextSpan(
                 text: "J'ai déjà un compte",
                 style: TextStyle(
-                  color: Colors.white, 
-                  letterSpacing: 0.9, 
-                  fontSize: 15, 
-                  decoration: TextDecoration.underline
-                ),
+                    color: Colors.white,
+                    letterSpacing: 0.9,
+                    fontSize: 15,
+                    decoration: TextDecoration.underline),
               ),
             ],
           ),
@@ -318,25 +278,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       _buildLogo(context),
-                      Text(
-                        'Inscription',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'OpenSans',
-                          fontSize: 25.0,
-                          fontWeight: FontWeight.bold,
-                        )
-                      ),
+                      Text('Inscription',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'OpenSans',
+                            fontSize: 25.0,
+                            fontWeight: FontWeight.bold,
+                          )),
                       SizedBox(height: 30.0),
                       _buildEmailZone(),
                       SizedBox(height: 30.0),
                       _buildPasswordZone(),
                       SizedBox(height: 20),
-                      _buildFNameZone(),
+                      _buildXZone(),
                       SizedBox(height: 20),
-                      _buildLNameZone(),
-                      SizedBox(height: 20),
-                      _buildLanguageZone(),
+                      _buildYNameZone(),
                       SizedBox(height: 20),
                       _buildRegisterButton(context),
                       SizedBox(height: 10.0),

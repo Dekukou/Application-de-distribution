@@ -1,54 +1,47 @@
 import 'dart:convert';
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-import 'package:planning_jump/utilities/constants.dart';
+import 'package:center/utilities/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LoginScreen extends StatefulWidget {
-
+class NewPackageScreen extends StatefulWidget {
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _NewPackageScreenState createState() => _NewPackageScreenState();
 }
 
-final email = TextEditingController();
-final password = TextEditingController();
-// final prefs = await SharedPreferences.getInstance();
+final x = TextEditingController();
+final y = TextEditingController();
 
-void login(context) async {
+// Fonction createPackage
+void createPackage(context) async {
+  final prefs = await SharedPreferences.getInstance();
+  final token = prefs.getString('token');
+
   http.Response response = await http.post(
-    Uri.encodeFull("http://54.38.32.140/api/v1/user/login"),
+    Uri.encodeFull("http://92.222.76.5:8000/api/createPackage"),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
+      "Authorization": 'Bearer ' + token
     },
-    body: jsonEncode(<String, String>{
-      'email': email.text,
-      'password': password.text,
-    }),
+    body: jsonEncode(<String, String>{'x': x.text, 'y': y.text}),
   );
-  print(response.statusCode);
-  if (response.statusCode == 200) {
-    var res = json.decode(response.body);
-    print(res['data']['oauth_token']);
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setString('token', res['data']['oauth_token']);
-    Navigator.of(context).pushNamed('/home');
+  var res = json.decode(response.body);
+  if (response.statusCode == 201) {
+    _showAlert(context, "Succes", res['message']);
   } else {
-    _showAlert(context);
+    _showAlert(context, "Error", res['message']);
   }
 }
 
-  void _showAlert(BuildContext context) {
-      showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text("Erreur"),
-            content: Text("Identifiants invalides"),
-          )
-      );
-    }
+void _showAlert(BuildContext context, title, text) {
+  showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+            title: Text(title),
+            content: Text(text),
+          ));
+}
 
 // Set App Background
 Widget _buildBackground() {
@@ -60,10 +53,10 @@ Widget _buildBackground() {
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
         colors: [
-            Color(0xFF00939F),
-            Color(0xFF545454),
-            Color(0xFF424242),
-            Color(0xFF303030),
+          Color(0xFF00939F),
+          Color(0xFF545454),
+          Color(0xFF424242),
+          Color(0xFF303030),
         ],
         stops: [0.1, 0.3, 0.6, 0.9],
       ),
@@ -79,13 +72,12 @@ Widget _buildLogo(context) {
   );
 }
 
-// Widget Email TextInput
-Widget _buildEmailZone() {
+Widget _buildXZone() {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
       Text(
-        'Email',
+        'X',
         style: kLabelStyle,
       ),
       SizedBox(height: 10.0),
@@ -94,29 +86,27 @@ Widget _buildEmailZone() {
         decoration: kBoxDecorationStyle,
         height: 60.0,
         child: TextField(
-          controller: email,
-          keyboardType: TextInputType.emailAddress,
+          controller: x,
+          keyboardType: TextInputType.text,
           style: TextStyle(color: Colors.white),
           decoration: InputDecoration(
-            border: InputBorder.none,
-            contentPadding: EdgeInsets.only(top: 14.0),
-            prefixIcon: Icon(Icons.email, color: Colors.white),
-            hintText: 'Entrez votre email',
-            hintStyle: kHintTextStyle
-          ),
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.only(top: 14.0),
+              prefixIcon: Icon(Icons.person, color: Colors.white),
+              hintText: 'Entrez la coordonnée X',
+              hintStyle: kHintTextStyle),
         ),
       ),
     ],
   );
 }
 
-// Widget Password TextInput
-Widget _buildPasswordZone() {
+Widget _buildYNameZone() {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
       Text(
-        'Mot de passe',
+        'Y',
         style: kLabelStyle,
       ),
       SizedBox(height: 10.0),
@@ -125,16 +115,15 @@ Widget _buildPasswordZone() {
         decoration: kBoxDecorationStyle,
         height: 60.0,
         child: TextField(
-          controller: password,
-          obscureText: true,
+          controller: y,
+          keyboardType: TextInputType.text,
           style: TextStyle(color: Colors.white),
           decoration: InputDecoration(
-            border: InputBorder.none,
-            contentPadding: EdgeInsets.only(top: 14.0),
-            prefixIcon: Icon(Icons.lock, color: Colors.white),
-            hintText: 'Entrez votre mot de passe',
-            hintStyle: kHintTextStyle
-          ),
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.only(top: 14.0),
+              prefixIcon: Icon(Icons.person, color: Colors.white),
+              hintText: 'Entrez la coordonnée Y',
+              hintStyle: kHintTextStyle),
         ),
       ),
     ],
@@ -142,7 +131,7 @@ Widget _buildPasswordZone() {
 }
 
 // Widget Bouton de connexion
-Widget _buildLoginButton(context) {
+Widget _buildNewPackageButton(context) {
   return Column(
     children: <Widget>[
       Container(
@@ -150,14 +139,14 @@ Widget _buildLoginButton(context) {
         width: double.infinity,
         child: RaisedButton(
           elevation: 5.0,
-          onPressed: () => login(context),
+          onPressed: () => createPackage(context),
           padding: EdgeInsets.all(15.0),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30.0),
           ),
           color: Color(0xFF00838F),
           child: Text(
-            'SE CONNECTER',
+            "CRÉER LE COLIS",
             style: TextStyle(
               color: Colors.white,
               letterSpacing: 1.5,
@@ -173,23 +162,22 @@ Widget _buildLoginButton(context) {
 }
 
 // Widget allant à la page d'inscription
-Widget _buildGoToRegister(context) {
+Widget _buildGoToLogin(context) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.end,
     children: <Widget>[
       GestureDetector(
-        onTap: () => Navigator.of(context).pushNamed('/register'),
+        onTap: () => Navigator.of(context).pushNamed('/login'),
         child: RichText(
           text: TextSpan(
             children: [
               TextSpan(
-                text: 'Créer un compte',
+                text: "J'ai déjà un compte",
                 style: TextStyle(
-                  color: Colors.white, 
-                  letterSpacing: 0.9, 
-                  fontSize: 15, 
-                  decoration: TextDecoration.underline
-                ),
+                    color: Colors.white,
+                    letterSpacing: 0.9,
+                    fontSize: 15,
+                    decoration: TextDecoration.underline),
               ),
             ],
           ),
@@ -199,7 +187,21 @@ Widget _buildGoToRegister(context) {
   );
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _NewPackageScreenState extends State<NewPackageScreen> {
+  int _selectedIndex = 2;
+
+  void _onItemTapped(int index) async {
+    setState(() {
+      print(index);
+      _selectedIndex = index;
+    });
+    if (index == 0) {
+      Navigator.of(context).pushNamed('/home');
+    }
+    if (index == 1) {
+      Navigator.of(context).pushNamed('/profil');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -223,23 +225,19 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       _buildLogo(context),
-                      Text(
-                        'Connexion',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'OpenSans',
-                          fontSize: 25.0,
-                          fontWeight: FontWeight.bold,
-                        )
-                      ),
+                      Text('Ajouter un colis',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'OpenSans',
+                            fontSize: 25.0,
+                            fontWeight: FontWeight.bold,
+                          )),
                       SizedBox(height: 30.0),
-                      _buildEmailZone(),
-                      SizedBox(height: 30.0),
-                      _buildPasswordZone(),
+                      _buildXZone(),
                       SizedBox(height: 20),
-                      _buildLoginButton(context),
-                      SizedBox(height: 10.0),
-                      _buildGoToRegister(context),
+                      _buildYNameZone(),
+                      SizedBox(height: 20),
+                      _buildNewPackageButton(context),
                     ],
                   ),
                 ),
@@ -247,6 +245,26 @@ class _LoginScreenState extends State<LoginScreen> {
             ],
           ),
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Color(0xFF545454),
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            title: Text('Accueil'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.perm_identity),
+            title: Text('Profil'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.playlist_add),
+            title: Text('Add Colis'),
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.cyan[600],
+        onTap: _onItemTapped,
       ),
     );
   }

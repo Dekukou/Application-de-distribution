@@ -55,9 +55,18 @@ class PackageController extends Controller
 	public function getPackages() {
 		$packages = Package::get();
 
+        if (count($pacckages) == 0) {
+            return response()->json([
+                "message" => "Aucun colis dans la DB",
+                "datas" => null,
+                "count" => 0
+            ], 404);
+        }
+
 		return response()->json([
 			"message" => "OK", 
-			"datas" => $packages
+			"datas" => $packages,
+            "count" => count($packages)
 		], 200);
 	}
 
@@ -147,15 +156,30 @@ class PackageController extends Controller
 	public function getPlanning() {
     	$datas = Planning::select('uid', 'tour', 'length', 'home', 'pos')->get();
 
+        $i = 0;
     	foreach ($datas as $data) {
-    		$data['length'] += $this->calcDistance($data['home'], $data['pos'][count($data['pos']) - 1]);
-    		unset($data['home']);
-    		unset($data['pos']);
+            if ($data['pos'] == null) {
+                unset($datas[$i]);
+            } else {
+        		$data['length'] += $this->calcDistance($data['home'], $data['pos'][count($data['pos']) - 1]);
+        		unset($data['home']);
+        		unset($data['pos']);
+            }
+            $i++;
     	}
+
+        if (count($datas) == 0) {
+            return response()->json([
+                "message" => "Aucune planification",
+                "datas" => null,
+                "count" => 0
+            ], 404);
+        }
 
     	return response()->json([
     		"message" => "Ok", 
-    		"datas" => $datas
+    		"datas" => $datas,
+            "count" => count($datas)
     	], 200);
     }
 

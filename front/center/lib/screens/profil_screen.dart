@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-import 'package:deliverer/utilities/constants.dart';
+import 'package:center/utilities/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilScreen extends StatefulWidget {
@@ -40,10 +40,10 @@ void updateUser(context, email, x, y, password) async {
     print(response.statusCode);
     if (response.statusCode == 200) {
       var res = json.decode(response.body);
-      _showAlert(context, res['message']);
+      _showAlert(context, "Success", res['message']);
     } else {
       var res = json.decode(response.body);
-      _showAlert(context, res['message']);
+      _showAlert(context, "Error", res['message']);
     }
   } else {
     http.Response response = await http.put(
@@ -62,18 +62,39 @@ void updateUser(context, email, x, y, password) async {
     print(response.statusCode);
     if (response.statusCode == 200) {
       var res = json.decode(response.body);
-      _showAlert(context, res['message']);
+      _showAlert(context, "Success", res['message']);
     } else {
       var res = json.decode(response.body);
-      _showAlert(context, res['message']);
+      _showAlert(context, "Error", res['message']);
     }
   }
 }
 
-void _showAlert(BuildContext context, text) {
+// Fonction createPlanning
+void createPlanning(context) async {
+  final prefs = await SharedPreferences.getInstance();
+  final token = prefs.getString('token');
+  http.Response response = await http.get(
+      Uri.encodeFull("http://92.222.76.5:8000/api/createPlanning"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        "Authorization": 'Bearer ' + token
+      });
+  if (response.statusCode == 201) {
+    var res = json.decode(response.body);
+    _showAlert(context, "Succes", res['message']);
+    print("OK");
+  } else {
+    var res = json.decode(response.body);
+    _showAlert(context, "Error", res['message']);
+  }
+}
+
+void _showAlert(BuildContext context, title, text) {
   showDialog(
       context: context,
       builder: (context) => AlertDialog(
+            title: Text(title),
             content: Text(text),
           ));
 }
@@ -234,7 +255,7 @@ Widget _buildLogoutButton(context) {
   return Column(
     children: <Widget>[
       Container(
-        padding: EdgeInsets.symmetric(vertical: 25.0, horizontal: 10),
+        padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10),
         width: double.infinity,
         child: RaisedButton(
           elevation: 5.0,
@@ -264,7 +285,7 @@ Widget _buildUpdateButton(context, email, x, y, password) {
   return Column(
     children: <Widget>[
       Container(
-        padding: EdgeInsets.symmetric(vertical: 25.0, horizontal: 10),
+        padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10),
         width: double.infinity,
         child: RaisedButton(
           elevation: 5.0,
@@ -276,6 +297,36 @@ Widget _buildUpdateButton(context, email, x, y, password) {
           color: Color(0xFF00838F),
           child: Text(
             'METTRE À JOUR',
+            style: TextStyle(
+              color: Colors.white,
+              letterSpacing: 1.5,
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'OpenSans',
+            ),
+          ),
+        ),
+      ),
+    ],
+  );
+}
+
+Widget _buildPlanningButton(context) {
+  return Column(
+    children: <Widget>[
+      Container(
+        padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10),
+        width: double.infinity,
+        child: RaisedButton(
+          elevation: 5.0,
+          onPressed: () => createPlanning(context),
+          padding: EdgeInsets.all(15.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30.0),
+          ),
+          color: Color(0xFF00838F),
+          child: Text(
+            'CRÉER LE PLANNING',
             style: TextStyle(
               color: Colors.white,
               letterSpacing: 1.5,
@@ -304,6 +355,9 @@ class _ProfilScreenState extends State<ProfilScreen> {
     });
     if (index == 0) {
       Navigator.of(context).pushNamed('/home');
+    }
+    if (index == 2) {
+      Navigator.of(context).pushNamed('/newPackage');
     }
   }
 
@@ -371,6 +425,7 @@ class _ProfilScreenState extends State<ProfilScreen> {
                       _buildUpdateButton(context, emailController, xController,
                           yController, password),
                       _buildLogoutButton(context),
+                      _buildPlanningButton(context),
                     ],
                   ),
                 ),
@@ -389,6 +444,10 @@ class _ProfilScreenState extends State<ProfilScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.perm_identity),
             title: Text('Profil'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.playlist_add),
+            title: Text('Création'),
           ),
         ],
         currentIndex: _selectedIndex,
