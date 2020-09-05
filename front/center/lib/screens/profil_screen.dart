@@ -210,11 +210,12 @@ Widget _buildYZone(y) {
           ),
           style: TextStyle(color: Colors.white),
           decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
-              prefixIcon: Icon(Icons.location_on, color: Colors.white),
-              hintText: 'Entrez la coordonnée Y',
-              hintStyle: kHintTextStyle),
+            border: InputBorder.none,
+            contentPadding: EdgeInsets.only(top: 14.0),
+            prefixIcon: Icon(Icons.location_on, color: Colors.white),
+            hintText: 'Entrez la coordonnée Y',
+            hintStyle: kHintTextStyle,
+          ),
         ),
       ),
     ],
@@ -240,11 +241,12 @@ Widget _buildPasswordZone() {
           obscureText: true,
           style: TextStyle(color: Colors.white),
           decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
-              prefixIcon: Icon(Icons.lock, color: Colors.white),
-              hintText: 'Entrez votre mot de passe',
-              hintStyle: kHintTextStyle),
+            border: InputBorder.none,
+            contentPadding: EdgeInsets.only(top: 14.0),
+            prefixIcon: Icon(Icons.lock, color: Colors.white),
+            hintText: 'Entrez votre mot de passe',
+            hintStyle: kHintTextStyle,
+          ),
         ),
       ),
     ],
@@ -375,13 +377,13 @@ class _ProfilScreenState extends State<ProfilScreen> {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token');
     http.Response response = await http.get(
-        Uri.encodeFull("http://92.222.76.5:8000/api/user"),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          "Authorization": 'Bearer ' + token
-        });
+      Uri.encodeFull("http://92.222.76.5:8000/api/user"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        "Authorization": 'Bearer ' + token
+      },
+    );
     var res = json.decode(response.body);
-    print(res);
     setState(() {
       user = res['datas'];
       emailController.text = user['email'];
@@ -418,15 +420,21 @@ class _ProfilScreenState extends State<ProfilScreen> {
                       SizedBox(height: 10),
                       Container(
                         child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              _buildXZone(xController),
-                              _buildYZone(yController),
-                            ]),
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            _buildXZone(xController),
+                            _buildYZone(yController),
+                          ],
+                        ),
                       ),
                       SizedBox(height: 10),
-                      _buildUpdateButton(context, emailController, xController,
-                          yController, password),
+                      _buildUpdateButton(
+                        context,
+                        emailController,
+                        xController,
+                        yController,
+                        password,
+                      ),
                       _buildLogoutButton(context),
                       _buildPlanningButton(context),
                     ],

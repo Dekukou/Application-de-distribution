@@ -30,10 +30,8 @@ void register(context) async {
       'role': '1'
     }),
   );
-  print(response.statusCode);
   if (response.statusCode == 201) {
     var res = json.decode(response.body);
-    print(res['data']['token']);
     final prefs = await SharedPreferences.getInstance();
     prefs.setString('token', res['data']['token']);
     Navigator.of(context).pushNamed('/home');
@@ -44,11 +42,12 @@ void register(context) async {
 
 void _showAlert(BuildContext context) {
   showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-            title: Text("Erreur"),
-            content: Text("Veuillez remplir tous les champs"),
-          ));
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text("Erreur"),
+      content: Text("Veuillez remplir tous les champs"),
+    ),
+  );
 }
 
 // Set App Background
@@ -99,11 +98,12 @@ Widget _buildEmailZone() {
           keyboardType: TextInputType.emailAddress,
           style: TextStyle(color: Colors.white),
           decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
-              prefixIcon: Icon(Icons.email, color: Colors.white),
-              hintText: 'Entrez votre email',
-              hintStyle: kHintTextStyle),
+            border: InputBorder.none,
+            contentPadding: EdgeInsets.only(top: 14.0),
+            prefixIcon: Icon(Icons.email, color: Colors.white),
+            hintText: 'Entrez votre email',
+            hintStyle: kHintTextStyle,
+          ),
         ),
       ),
     ],
@@ -128,18 +128,19 @@ Widget _buildXZone() {
           keyboardType: TextInputType.text,
           style: TextStyle(color: Colors.white),
           decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
-              prefixIcon: Icon(Icons.person, color: Colors.white),
-              hintText: 'Entrez la coordonnée X',
-              hintStyle: kHintTextStyle),
+            border: InputBorder.none,
+            contentPadding: EdgeInsets.only(top: 14.0),
+            prefixIcon: Icon(Icons.person, color: Colors.white),
+            hintText: 'Entrez la coordonnée X',
+            hintStyle: kHintTextStyle,
+          ),
         ),
       ),
     ],
   );
 }
 
-Widget _buildYNameZone() {
+Widget _buildYZone() {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
@@ -157,11 +158,12 @@ Widget _buildYNameZone() {
           keyboardType: TextInputType.text,
           style: TextStyle(color: Colors.white),
           decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
-              prefixIcon: Icon(Icons.person, color: Colors.white),
-              hintText: 'Entrez la coordonnée Y',
-              hintStyle: kHintTextStyle),
+            border: InputBorder.none,
+            contentPadding: EdgeInsets.only(top: 14.0),
+            prefixIcon: Icon(Icons.person, color: Colors.white),
+            hintText: 'Entrez la coordonnée Y',
+            hintStyle: kHintTextStyle,
+          ),
         ),
       ),
     ],
@@ -187,11 +189,12 @@ Widget _buildPasswordZone() {
           obscureText: true,
           style: TextStyle(color: Colors.white),
           decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
-              prefixIcon: Icon(Icons.lock, color: Colors.white),
-              hintText: 'Entrez votre mot de passe',
-              hintStyle: kHintTextStyle),
+            border: InputBorder.none,
+            contentPadding: EdgeInsets.only(top: 14.0),
+            prefixIcon: Icon(Icons.lock, color: Colors.white),
+            hintText: 'Entrez votre mot de passe',
+            hintStyle: kHintTextStyle,
+          ),
         ),
       ),
     ],
@@ -242,10 +245,11 @@ Widget _buildGoToLogin(context) {
               TextSpan(
                 text: "J'ai déjà un compte",
                 style: TextStyle(
-                    color: Colors.white,
-                    letterSpacing: 0.9,
-                    fontSize: 15,
-                    decoration: TextDecoration.underline),
+                  color: Colors.white,
+                  letterSpacing: 0.9,
+                  fontSize: 15,
+                  decoration: TextDecoration.underline,
+                ),
               ),
             ],
           ),
@@ -278,13 +282,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       _buildLogo(context),
-                      Text('Inscription',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'OpenSans',
-                            fontSize: 25.0,
-                            fontWeight: FontWeight.bold,
-                          )),
+                      Text(
+                        'Inscription',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'OpenSans',
+                          fontSize: 25.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       SizedBox(height: 30.0),
                       _buildEmailZone(),
                       SizedBox(height: 30.0),
@@ -292,7 +298,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       SizedBox(height: 20),
                       _buildXZone(),
                       SizedBox(height: 20),
-                      _buildYNameZone(),
+                      _buildYZone(),
                       SizedBox(height: 20),
                       _buildRegisterButton(context),
                       SizedBox(height: 10.0),

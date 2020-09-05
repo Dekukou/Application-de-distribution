@@ -233,8 +233,11 @@ class _DeliverersScreenState extends State<DeliverersScreen> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
                             SizedBox(height: 40),
-                            _myText("${snapshot.data.message}", 50.0,
-                                Alignment.center)
+                            _myText(
+                              "${snapshot.data.message}",
+                              50.0,
+                              Alignment.center,
+                            )
                           ],
                         ),
                       ),

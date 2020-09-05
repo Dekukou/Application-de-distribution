@@ -24,7 +24,10 @@ void createPackage(context) async {
       'Content-Type': 'application/json; charset=UTF-8',
       "Authorization": 'Bearer ' + token
     },
-    body: jsonEncode(<String, String>{'x': x.text, 'y': y.text}),
+    body: jsonEncode(<String, String>{
+      'x': x.text,
+      'y': y.text,
+    }),
   );
   var res = json.decode(response.body);
   if (response.statusCode == 201) {
@@ -36,11 +39,12 @@ void createPackage(context) async {
 
 void _showAlert(BuildContext context, title, text) {
   showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-            title: Text(title),
-            content: Text(text),
-          ));
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text(title),
+      content: Text(text),
+    ),
+  );
 }
 
 // Set App Background
@@ -91,11 +95,12 @@ Widget _buildXZone() {
           keyboardType: TextInputType.text,
           style: TextStyle(color: Colors.white),
           decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
-              prefixIcon: Icon(Icons.person, color: Colors.white),
-              hintText: 'Entrez la coordonnée X',
-              hintStyle: kHintTextStyle),
+            border: InputBorder.none,
+            contentPadding: EdgeInsets.only(top: 14.0),
+            prefixIcon: Icon(Icons.person, color: Colors.white),
+            hintText: 'Entrez la coordonnée X',
+            hintStyle: kHintTextStyle,
+          ),
         ),
       ),
     ],
@@ -121,11 +126,12 @@ Widget _buildYZone() {
           keyboardType: TextInputType.text,
           style: TextStyle(color: Colors.white),
           decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
-              prefixIcon: Icon(Icons.person, color: Colors.white),
-              hintText: 'Entrez la coordonnée Y',
-              hintStyle: kHintTextStyle),
+            border: InputBorder.none,
+            contentPadding: EdgeInsets.only(top: 14.0),
+            prefixIcon: Icon(Icons.person, color: Colors.white),
+            hintText: 'Entrez la coordonnée Y',
+            hintStyle: kHintTextStyle,
+          ),
         ),
       ),
     ],
@@ -204,21 +210,24 @@ class _NewPackageScreenState extends State<NewPackageScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       _buildLogo(context),
-                      Text('Ajouter un colis',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'OpenSans',
-                            fontSize: 25.0,
-                            fontWeight: FontWeight.bold,
-                          )),
+                      Text(
+                        'Ajouter un colis',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'OpenSans',
+                          fontSize: 25.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       SizedBox(height: 30.0),
                       Container(
                         child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              _buildXZone(),
-                              _buildYZone(),
-                            ]),
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            _buildXZone(),
+                            _buildYZone(),
+                          ],
+                        ),
                       ),
                       SizedBox(height: 20),
                       _buildNewPackageButton(context),

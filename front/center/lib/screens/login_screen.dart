@@ -12,7 +12,6 @@ class LoginScreen extends StatefulWidget {
 
 final email = TextEditingController();
 final password = TextEditingController();
-// final prefs = await SharedPreferences.getInstance();
 
 void login(context) async {
   http.Response response = await http.post(
@@ -26,7 +25,7 @@ void login(context) async {
       'role': '1'
     }),
   );
-  print(response.statusCode);
+
   if (response.statusCode == 201) {
     var res = json.decode(response.body);
     print(res['token']);
@@ -40,11 +39,12 @@ void login(context) async {
 
 void _showAlert(BuildContext context) {
   showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-            title: Text("Erreur"),
-            content: Text("Identifiants invalides"),
-          ));
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text("Erreur"),
+      content: Text("Identifiants invalides"),
+    ),
+  );
 }
 
 // Set App Background
@@ -95,11 +95,12 @@ Widget _buildEmailZone() {
           keyboardType: TextInputType.emailAddress,
           style: TextStyle(color: Colors.white),
           decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
-              prefixIcon: Icon(Icons.email, color: Colors.white),
-              hintText: 'Entrez votre email',
-              hintStyle: kHintTextStyle),
+            border: InputBorder.none,
+            contentPadding: EdgeInsets.only(top: 14.0),
+            prefixIcon: Icon(Icons.email, color: Colors.white),
+            hintText: 'Entrez votre email',
+            hintStyle: kHintTextStyle,
+          ),
         ),
       ),
     ],
@@ -125,11 +126,12 @@ Widget _buildPasswordZone() {
           obscureText: true,
           style: TextStyle(color: Colors.white),
           decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
-              prefixIcon: Icon(Icons.lock, color: Colors.white),
-              hintText: 'Entrez votre mot de passe',
-              hintStyle: kHintTextStyle),
+            border: InputBorder.none,
+            contentPadding: EdgeInsets.only(top: 14.0),
+            prefixIcon: Icon(Icons.lock, color: Colors.white),
+            hintText: 'Entrez votre mot de passe',
+            hintStyle: kHintTextStyle,
+          ),
         ),
       ),
     ],
@@ -180,10 +182,11 @@ Widget _buildGoToRegister(context) {
               TextSpan(
                 text: 'Créer un compte',
                 style: TextStyle(
-                    color: Colors.white,
-                    letterSpacing: 0.9,
-                    fontSize: 15,
-                    decoration: TextDecoration.underline),
+                  color: Colors.white,
+                  letterSpacing: 0.9,
+                  fontSize: 15,
+                  decoration: TextDecoration.underline,
+                ),
               ),
             ],
           ),
@@ -216,13 +219,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       _buildLogo(context),
-                      Text('Connexion',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'OpenSans',
-                            fontSize: 25.0,
-                            fontWeight: FontWeight.bold,
-                          )),
+                      Text(
+                        'Connexion',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'OpenSans',
+                          fontSize: 25.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       SizedBox(height: 30.0),
                       _buildEmailZone(),
                       SizedBox(height: 30.0),

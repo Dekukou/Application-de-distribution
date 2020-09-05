@@ -10,11 +10,12 @@ Future<Planning> fetchPlanning() async {
   final token = prefs.getString('token');
 
   http.Response response = await http.get(
-      Uri.encodeFull("http://92.222.76.5:8000/api/getPlanning"),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        "Authorization": 'Bearer ' + token
-      });
+    Uri.encodeFull("http://92.222.76.5:8000/api/getPlanning"),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      "Authorization": 'Bearer ' + token
+    },
+  );
   return Planning.fromJson(json.decode(response.body));
 }
 
@@ -28,6 +29,7 @@ class Planning {
   factory Planning.fromJson(Map<String, dynamic> json) {
     List<Result> resultsList;
     var list = json['datas'] as List;
+
     if (json['count'] != 0) {
       print(json['count']);
       resultsList = list.map((i) => Result.fromJson(i)).toList();
@@ -67,16 +69,20 @@ class HomeScreen extends StatefulWidget {
 
 Widget _myText(value, size, pos) {
   return Align(
-      alignment: pos,
-      child: Container(
-          child: Text(value,
-              style: TextStyle(
-                color: Colors.white,
-                letterSpacing: 1.5,
-                fontSize: size,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'OpenSans',
-              ))));
+    alignment: pos,
+    child: Container(
+      child: Text(
+        value,
+        style: TextStyle(
+          color: Colors.white,
+          letterSpacing: 1.5,
+          fontSize: size,
+          fontWeight: FontWeight.bold,
+          fontFamily: 'OpenSans',
+        ),
+      ),
+    ),
+  );
 }
 
 // Set App Background
@@ -132,11 +138,12 @@ class _HomeScreenState extends State<HomeScreen> {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token');
     http.Response response = await http.get(
-        Uri.encodeFull("http://92.222.76.5:8000/api/getPlanning"),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          "Authorization": 'Bearer ' + token
-        });
+      Uri.encodeFull("http://92.222.76.5:8000/api/getPlanning"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        "Authorization": 'Bearer ' + token
+      },
+    );
     var res = json.decode(response.body);
     print(res['message']);
     setState(() {
@@ -181,29 +188,37 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     );
                   }
-                  return Stack(children: <Widget>[
-                    _buildBackground(),
-                    ListView(
-                      children: plannings
-                          .map((planning) =>
-                              planningTemplate(planning.plannings[0]))
-                          .toList(),
-                    ),
-                  ]);
+                  return Stack(
+                    children: <Widget>[
+                      _buildBackground(),
+                      ListView(
+                        children: plannings
+                            .map((planning) =>
+                                planningTemplate(planning.plannings[0]))
+                            .toList(),
+                      ),
+                    ],
+                  );
                 } else {
-                  return Stack(children: <Widget>[
-                    _buildBackground(),
-                    Container(
-                      child: Column(
+                  return Stack(
+                    children: <Widget>[
+                      _buildBackground(),
+                      Container(
+                        child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
                             SizedBox(height: 40),
-                            _myText("${snapshot.data.message}", 50.0,
-                                Alignment.center)
-                          ]),
-                    )
-                  ]);
+                            _myText(
+                              "${snapshot.data.message}",
+                              50.0,
+                              Alignment.center,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
                 }
               }
               return CircularProgressIndicator();
@@ -244,67 +259,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-// ignore: must_be_immutable
-class MyContainer extends StatelessWidget {
-  // final VoidCallback delivered;
-  var datas;
-  MyContainer({this.datas});
-
-  @override
-  Widget build(BuildContext context) {
-    return this.datas == null
-        ? new Container(
-            child: Column(children: <Widget>[CircularProgressIndicator()]),
-          )
-        : new Container(
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(height: 40),
-                  _myText("${datas['message']}", 50.0, Alignment.center)
-                ]),
-          );
-  }
-}
-
-class ButtonDelivered extends StatelessWidget {
-  final VoidCallback delivered;
-
-  ButtonDelivered(this.delivered);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Container(
-          padding: EdgeInsets.symmetric(vertical: 25.0, horizontal: 10),
-          width: double.infinity,
-          child: RaisedButton(
-            elevation: 5.0,
-            onPressed: this.delivered,
-            padding: EdgeInsets.all(15.0),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30.0),
-            ),
-            color: Color(0xFF00838F),
-            child: Text(
-              'LIVRÉ',
-              style: TextStyle(
-                color: Colors.white,
-                letterSpacing: 1.5,
-                fontSize: 18.0,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'OpenSans',
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
 Widget planningTemplate(planning) {
   return Card(
     color: Colors.white30,
@@ -313,36 +267,37 @@ Widget planningTemplate(planning) {
     child: Padding(
       padding: EdgeInsets.all(12.0),
       child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Text(
-              "Livreur: ${planning.uid}",
-              style: TextStyle(
-                fontSize: 25.0,
-                fontWeight: FontWeight.bold,
-              ),
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Text(
+            "Livreur: ${planning.uid}",
+            style: TextStyle(
+              fontSize: 25.0,
+              fontWeight: FontWeight.bold,
             ),
-            SizedBox(
-              height: 10.0,
+          ),
+          SizedBox(
+            height: 10.0,
+          ),
+          Text(
+            "Colis: ${planning.tour}",
+            style: TextStyle(
+              fontSize: 20.0,
             ),
-            Text(
-              "Colis: ${planning.tour}",
-              style: TextStyle(
-                fontSize: 20.0,
-              ),
+          ),
+          SizedBox(
+            height: 10.0,
+          ),
+          Text(
+            "${planning.length} km",
+            style: TextStyle(
+              fontSize: 15.0,
+              fontWeight: FontWeight.w200,
+              color: Colors.black,
             ),
-            SizedBox(
-              height: 10.0,
-            ),
-            Text(
-              "${planning.length} km",
-              style: TextStyle(
-                fontSize: 15.0,
-                fontWeight: FontWeight.w200,
-                color: Colors.black,
-              ),
-            ),
-          ]),
+          ),
+        ],
+      ),
     ),
   );
 }
