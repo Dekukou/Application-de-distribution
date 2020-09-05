@@ -116,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
       Navigator.of(context).pushNamed('/packages');
     } else if (index == 3) {
       Navigator.of(context).pushNamed('/newPackage');
-    } else if (index == 1) {
+    } else if (index == 4) {
       Navigator.of(context).pushNamed('/profil');
     }
   }

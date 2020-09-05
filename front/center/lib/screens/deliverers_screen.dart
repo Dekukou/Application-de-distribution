@@ -115,7 +115,7 @@ class _DeliverersScreenState extends State<DeliverersScreen> {
     if (index == 0) {
       Navigator.of(context).pushNamed('/home');
     } else if (index == 2) {
-      // Navigator.of(context).pushNamed('/packages');
+      Navigator.of(context).pushNamed('/packages');
     } else if (index == 3) {
       Navigator.of(context).pushNamed('/newPackage');
     } else if (index == 4) {

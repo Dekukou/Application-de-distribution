@@ -53,7 +53,7 @@ class PackageController extends Controller
 	}
 
 	public function getPackages() {
-		$packages = Package::orderBy('id', 'asc')->get();
+		$packages = Package::orderBy('uid', 'asc')->get();
 
         if (count($packages) == 0) {
             return response()->json([
@@ -177,7 +177,7 @@ class PackageController extends Controller
     	return response()->json([
     		"message" => "Ok", 
     		"datas" => $tmp,
-            "count" => count($datas)
+            "count" => count($tmp)
     	], 200);
     }
 

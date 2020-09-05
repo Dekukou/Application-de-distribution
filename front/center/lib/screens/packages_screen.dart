@@ -105,7 +105,7 @@ Widget _buildBackground() {
 
 class _PackagesScreenState extends State<PackagesScreen> {
   Future<Package> futurePackages;
-  int _selectedIndex = 1;
+  int _selectedIndex = 2;
   var datas;
 
   void _onItemTapped(int index) async {
@@ -192,7 +192,7 @@ class _PackagesScreenState extends State<PackagesScreen> {
                                           CrossAxisAlignment.stretch,
                                       children: <Widget>[
                                         Text(
-                                          "Livreur: ${package.packages[0].uid}",
+                                          "Colis: ${package.packages[0].uid}",
                                           style: TextStyle(
                                             fontSize: 25.0,
                                             fontWeight: FontWeight.bold,
