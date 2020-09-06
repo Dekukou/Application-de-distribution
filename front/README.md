@@ -14,9 +14,13 @@ Cette application est destinée au centre des colis pour créer de nouveaux coli
 La page `Accueil` permet de visualiser les tournées de chaque livreur.
 La page `Profil` permet la modification de l'utilisateur et la création des livraisons pour la journée.
 
+Utilisateur déjà dans la DB: `root@test.fr`, password: `groot1234`
+
 ### Application `deliverer`
 
 Cette deuxième est destinée aux livreurs, ce qui leur permet de signaler la livraison d'un colis. Une fois la livraison effectuée, le livreur reçoit sa prochaine destination. Il a également une visualisation sur la distance parcourue et sur sa distance totale de la journée.
+
+Utilisateur déjà dans la DB: `test3@test.fr`, password: `grootgroot`, uid; `mm-CcaS9dlVRhty2`
 
 ## Installation Flutter
 
