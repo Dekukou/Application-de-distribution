@@ -212,9 +212,7 @@ class PackageController extends Controller
 
     	$packages = Package::inRandomOrder()->select('pos', 'uid')->where([['todo', '=', true]])->get();
     	
-    	foreach ($packages as $package) {
-	    	UserPackage::where([['package_uid', '=', $package['uid']], ['delivery_date', '=', date('Y-m-d')]])->delete();
-    	}
+        UserPackage::where('delivery_date', date('Y-m-d'))->delete();
 
     	$mailmens = User::inRandomOrder()->select('uid', 'home')->where([['role', '=', '0'], ['dispo', '=', true]])->get();
 
