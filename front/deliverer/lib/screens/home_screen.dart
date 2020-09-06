@@ -89,7 +89,6 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _connected();
-    _getPlanning();
   }
 
   void delivered() async {
@@ -129,6 +128,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
     if (token == null) {
       Navigator.of(context).pushNamed('/login');
+    } else {
+      _getPlanning();
     }
   }
 

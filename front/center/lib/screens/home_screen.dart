@@ -221,7 +221,22 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 }
               }
-              return CircularProgressIndicator();
+              return Stack(
+                children: <Widget>[
+                  _buildBackground(),
+                  Container(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              );
             },
           ),
         ),

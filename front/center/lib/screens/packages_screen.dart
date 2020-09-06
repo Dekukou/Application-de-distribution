@@ -144,7 +144,6 @@ class _PackagesScreenState extends State<PackagesScreen> {
         {'uid': package.uid, 'bool': !package.todo},
       ),
     );
-
     setState(() {
       futurePackages = fetchPackages();
     });
@@ -245,7 +244,22 @@ class _PackagesScreenState extends State<PackagesScreen> {
                   );
                 }
               }
-              return CircularProgressIndicator();
+              return Stack(
+                children: <Widget>[
+                  _buildBackground(),
+                  Container(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              );
             },
           ),
         ),

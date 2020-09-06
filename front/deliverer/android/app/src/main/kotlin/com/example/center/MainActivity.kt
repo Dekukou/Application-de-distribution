@@ -1,4 +1,4 @@
-package com.example.center
+package com.example.deliverer
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

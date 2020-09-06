@@ -326,7 +326,7 @@ class _ProfilScreenState extends State<ProfilScreen> {
     var res = json.decode(response.body);
     print(res);
     setState(() {
-      user = res['data'];
+      user = res['datas'];
       emailController.text = user['email'];
       xController.text = user['home'][0].toString();
       yController.text = user['home'][1].toString();

@@ -144,7 +144,6 @@ class _DeliverersScreenState extends State<DeliverersScreen> {
         {'uid': deliverer.uid, 'bool': !deliverer.dispo},
       ),
     );
-
     setState(() {
       futureDeliverers = fetchDeliverers();
     });
@@ -245,7 +244,22 @@ class _DeliverersScreenState extends State<DeliverersScreen> {
                   );
                 }
               }
-              return CircularProgressIndicator();
+              return Stack(
+                children: <Widget>[
+                  _buildBackground(),
+                  Container(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              );
             },
           ),
         ),
