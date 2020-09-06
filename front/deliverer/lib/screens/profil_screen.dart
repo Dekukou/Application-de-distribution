@@ -25,7 +25,6 @@ void logout(context) async {
 
 // Fonction register
 void updateUser(context, email, x, y, password) async {
-  print(password.text);
   final prefs = await SharedPreferences.getInstance();
   final token = prefs.getString('token');
   if (password.text == "") {
