@@ -12,16 +12,20 @@ class HomeScreen extends StatefulWidget {
 
 Widget _myText(value, size, pos) {
   return Align(
-      alignment: pos,
-      child: Container(
-          child: Text(value,
-              style: TextStyle(
-                color: Colors.white,
-                letterSpacing: 1.5,
-                fontSize: size,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'OpenSans',
-              ))));
+    alignment: pos,
+    child: Container(
+      child: Text(
+        value,
+        style: TextStyle(
+          color: Colors.white,
+          letterSpacing: 1.5,
+          fontSize: size,
+          fontWeight: FontWeight.bold,
+          fontFamily: 'OpenSans',
+        ),
+      ),
+    ),
+  );
 }
 
 Widget _progressBar(context, planning) {
@@ -89,18 +93,20 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _connected();
+    _getPlanning();
   }
 
   void delivered() async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token');
     http.Response response = await http.put(
-        Uri.encodeFull("http://92.222.76.5:8000/api/delivery"),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          "Authorization": 'Bearer ' + token
-        },
-        body: jsonEncode({'uid': planning['datas']['package'], 'bool': true}));
+      Uri.encodeFull("http://92.222.76.5:8000/api/delivery"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        "Authorization": 'Bearer ' + token
+      },
+      body: jsonEncode({'uid': planning['datas']['package'], 'bool': true}),
+    );
     var res = json.decode(response.body);
     setState(() {
       planning = res;
@@ -111,11 +117,12 @@ class _HomeScreenState extends State<HomeScreen> {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token');
     http.Response response = await http.get(
-        Uri.encodeFull("http://92.222.76.5:8000/api/planning"),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          "Authorization": 'Bearer ' + token
-        });
+      Uri.encodeFull("http://92.222.76.5:8000/api/planning"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        "Authorization": 'Bearer ' + token
+      },
+    );
     var res = json.decode(response.body);
     setState(() {
       planning = res;
@@ -144,8 +151,9 @@ class _HomeScreenState extends State<HomeScreen> {
             children: <Widget>[
               _buildBackground(),
               new Flexible(
-                  child: new MyContainer(
-                      planning: planning, delivered: delivered)),
+                child:
+                    new MyContainer(planning: planning, delivered: delivered),
+              ),
             ],
           ),
         ),
@@ -185,14 +193,14 @@ class MyContainer extends StatelessWidget {
         : this.planning['datas'] == null
             ? new Container(
                 child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      SizedBox(height: 40),
-                      _myText("${planning['message']}", 50.0, Alignment.center),
-                      _myText("Profil", 50.0, Alignment.center),
-                      // _buildLogoutButton(context),
-                    ]),
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(height: 40),
+                    _myText("${planning['message']}", 50.0, Alignment.center),
+                    _myText("Profil", 50.0, Alignment.center),
+                  ],
+                ),
               )
             : this.planning['datas']['actual'] !=
                     this.planning['datas']['total']
@@ -230,12 +238,14 @@ class MyContainer extends StatelessWidget {
                                     Alignment.center),
                               ]),
                         ),
-                        // SizedBox(height: 10),
                         _myText(
-                            "${planning['datas']['actual']} / ${planning['datas']['total']}",
-                            22.0,
-                            Alignment.center),
-                        new Flexible(child: new ButtonDelivered(delivered))
+                          "${planning['datas']['actual']} / ${planning['datas']['total']}",
+                          22.0,
+                          Alignment.center,
+                        ),
+                        new Flexible(
+                          child: new ButtonDelivered(delivered),
+                        )
                       ],
                     ),
                   )
@@ -248,18 +258,25 @@ class MyContainer extends StatelessWidget {
                         Container(
                           padding: EdgeInsets.only(left: 20.0),
                           child: Column(children: <Widget>[
-                            _myText("Livreur: ${planning['datas']['uid']}",
-                                16.0, Alignment.centerLeft),
+                            _myText(
+                              "Livreur: ${planning['datas']['uid']}",
+                              16.0,
+                              Alignment.centerLeft,
+                            ),
                           ]),
                         ),
                         SizedBox(height: 60),
-                        _myText("${planning['datas']['package']}", 22.0,
-                            Alignment.center),
+                        _myText(
+                          "${planning['datas']['package']}",
+                          22.0,
+                          Alignment.center,
+                        ),
                         SizedBox(height: 60),
                         _myText(
-                            "X: ${planning['datas']['x']}; Y: ${planning['datas']['y']}",
-                            18.0,
-                            Alignment.center),
+                          "X: ${planning['datas']['x']}; Y: ${planning['datas']['y']}",
+                          18.0,
+                          Alignment.center,
+                        ),
                         SizedBox(height: 40),
                         _progressBar(context, planning),
                         Container(
@@ -267,17 +284,24 @@ class MyContainer extends StatelessWidget {
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                _myText("${planning['datas']['actual_dist']}",
-                                    18.0, Alignment.center),
-                                _myText("${planning['datas']['length']}", 18.0,
-                                    Alignment.center),
+                                _myText(
+                                  "${planning['datas']['actual_dist']}",
+                                  18.0,
+                                  Alignment.center,
+                                ),
+                                _myText(
+                                  "${planning['datas']['length']}",
+                                  18.0,
+                                  Alignment.center,
+                                ),
                               ]),
                         ),
                         SizedBox(height: 20),
                         _myText(
-                            "${planning['datas']['actual']} / ${planning['datas']['total']}",
-                            22.0,
-                            Alignment.center),
+                          "${planning['datas']['actual']} / ${planning['datas']['total']}",
+                          22.0,
+                          Alignment.center,
+                        ),
                       ],
                     ),
                   );

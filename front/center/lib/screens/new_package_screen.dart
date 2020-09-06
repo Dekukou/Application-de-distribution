@@ -97,8 +97,8 @@ Widget _buildXZone() {
           decoration: InputDecoration(
             border: InputBorder.none,
             contentPadding: EdgeInsets.only(top: 14.0),
-            prefixIcon: Icon(Icons.person, color: Colors.white),
-            hintText: 'Entrez la coordonnée X',
+            prefixIcon: Icon(Icons.location_on, color: Colors.white),
+            hintText: 'X',
             hintStyle: kHintTextStyle,
           ),
         ),
@@ -128,8 +128,8 @@ Widget _buildYZone() {
           decoration: InputDecoration(
             border: InputBorder.none,
             contentPadding: EdgeInsets.only(top: 14.0),
-            prefixIcon: Icon(Icons.person, color: Colors.white),
-            hintText: 'Entrez la coordonnée Y',
+            prefixIcon: Icon(Icons.location_on, color: Colors.white),
+            hintText: 'Y',
             hintStyle: kHintTextStyle,
           ),
         ),
