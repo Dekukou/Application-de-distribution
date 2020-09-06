@@ -249,7 +249,7 @@ class PackageController extends Controller
     		foreach ($mailmens as $mailmen) {
     			if ($mailmen['bool'] == true) {
     				if (!empty($packages)) {
-	    				$tmp = $this->sortDistance($packages, $mailmens[$i]['last']);
+	    				$tmp = $this->sortDistance($packages, $mailmen['last']);
 	    				if ($this->calcDistanceTotal($tmp[0][1]['pos'], $mailmen['last'], $mailmen['home']) + $mailmen['length'] <= 240) {
 	    					$mailmen['last'] = $tmp[0][1]['pos'];
     						$this->linkUserPackage($mailmen, $tmp[0]);
