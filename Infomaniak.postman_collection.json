@@ -32,7 +32,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"x\": -45,\n    \"y\": -34.6\n}",
+							"raw": "{\n    \"x\": 30,\n    \"y\": 10\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -58,7 +58,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"uid\": \"pkg-tba8WPzMfopN7\",\n    \"bool\": true\n}",
+							"raw": "{\n    \"uid\": \"pkg-LreHGy9MrwAZI\",\n    \"bool\": true\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -84,7 +84,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"uid\": \"pkg-1Omp8G235TpCQ\",\n    \"bool\": true\n}",
+							"raw": "{\n    \"uid\": \"pkg-mW7EygHUY9HYi\",\n    \"bool\": true\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -143,7 +143,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": ""
+							"raw": "{{url}}/packages",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"packages"
+							]
 						}
 					},
 					"response": []
@@ -161,7 +167,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"test1@test.fr\",\n    \"password\": \"test1234\",\n    \"role\": 0,\n    \"x\": 35,\n    \"y\": 10\n}",
+							"raw": "{\n    \"email\": \"test3@test.fr\",\n    \"password\": \"test1234\",\n    \"role\": 0,\n    \"x\": 35,\n    \"y\": 10\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -187,7 +193,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"test2@test.fr\",\n    \"password\": \"test1234\"\n}",
+							"raw": "{\n    \"email\": \"test3@test.fr\",\n    \"password\": \"grootgroot\",\n    \"role\": \"0\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -230,7 +236,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"test1@test.fr\",\n    \"x\": 15,\n    \"y\": 15\n}",
+							"raw": "{\n    \"email\": \"root@test.fr\",\n    \"x\": 15,\n    \"y\": 15,\n    \"password\": \"groot1234\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -256,7 +262,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"uid\": \"mm-2vjAs974zhpvj\",\n    \"bool\": true\n}",
+							"raw": "{\n    \"uid\": \"mm-CcaS9dlVRhty2\",\n    \"bool\": false\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -293,7 +299,7 @@
 					"response": []
 				},
 				{
-					"name": "getUsers",
+					"name": "deliverers",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -318,7 +324,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiMGFkNTBiZmE2ZTRjNGMzNWNhNWI2ZWUyNDY3MjdjMmQxYzkyMjM0ZDVkOTczODgwZmMxYTAyMWRhMTJlNWEyOTUyODJmNjMyMmVlZjBjYTAiLCJpYXQiOjE1OTg5NTI1OTMsIm5iZiI6MTU5ODk1MjU5MywiZXhwIjoxNjMwNDg4NTkzLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.b_I3l4_Cyw5XGXlGSqfCDx_UHoH3BMsvdL5sC05eOUc9bCZEnorptvxeWODxJZSu2goiVN5Oxra8yrd6SEgZCCj2Z5TPQi7hH4W9siNJ6ynYXSZMxjmGHvFlMOZ6Gq8zfqT2a1PVWwj6gk_-LF0q6xRprWh2retddX8DkCWMivnPJ5YzRRjA27BI3FyhQ3YyAvmYOkj4nc8UjdQs9-hpFrtd00ARjBHmZksVKEdTjBbBp_KK07Cvdhdk2NK2klzO19dC72xTAKgjLQ96AIlaNzAzCpF5pP13krAw12zbzEzu9lOHgTe5fZnlJZdBDVABHH0SCpyWwygGB-V79DA9mpPPPn3x20i-KgGwVVyxYPtP_tJ1N2AyMBV1EjhGpdsV77GNXREH5IloJjt9Gux0EoFwikm039HcnOR0zOcLmzEQcBf1bWx4zQtLRbk81Fpaaf1c_tvcyh_OotaGWL1_uRZ_hJTNsJLJKfaVzmxTZ5GrviBIbC8aD3SDa5eKTqudG_MRFNevxdjqcd8t9tFzMnTLZ4Aj0VW8nsJaQ1yRbeOpkje7xP_Dy-uHkCrx5Qv_xULyi4SzfT3jqefahZ8K4eWEI5obpgX3POJ_HtKMqDtab-iGC8cI5zzcQo0lnDg2smSDgAqL81PAOhg9ddJ8uV16RSnRCL3wwYk02BvZmu4",
+				"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiYmZmM2FkNmY1ZDdmNzc4NGUyYmUyNDRlMzQ2NWRmYjc1YjdmZDg1YTIxMTllMjEzOWQzNjI1NzI1ODZkOTJlNmMzMTQ5MmQ1ODQ0ZmI3MTEiLCJpYXQiOjE1OTkzNTQ5MzIsIm5iZiI6MTU5OTM1NDkzMiwiZXhwIjoxNjMwODkwOTMyLCJzdWIiOiIyIiwic2NvcGVzIjpbXX0.pcVy7BOQMWO8_CF3gd7_9R6zjrXycG9PnCkJRmfVibzBlXfUYwaf71Il3xyh0kOEMkec1A3XhJObaVCMkmPTO3MNFisOOpiGtfcrH1t8yHkwu6UyP8JySgumkigfKa96g6yrKb35lUdfx8TYeBI0OH-0ww0q25LqVHddSYNdk1-Iew7iqGvwbdoszX0RWe9FV0LBLl-dykPlxssy7zcynJ40tH0QjXdsCx4daGPliUn4NmA0ceq8UEit48sJC-PbEg6qqFiITP6xNczTCgohmniEpEouplGoMXlZed2REHnsCqzBnezacRKDtN-ox-LF6oD4fPM01kGvka09Y5SUzBOhv1uJb0KceKdVOHYIfYDCudHtvirmKpSDb-P3gp611sBQvUQpB53P3ZHMpRkIH3WVdjZvSN6689o_1WdJskbwqvGTgAm7UvMcDy6ldIsD2H5wAJM3XylaRN2Aab2lRD89uWHRLbThMZeFGTB1oaNO-sif6YqxrBwg8Gj9V0bZ_CZqh6tP09uK_2CGClQ0YcG6j5nS5rUCS5UhDnZ5U4D7cAhWf9maX14YiF-TxG9N26AmjoW1O5jMZUCdPYlqgG-QpUtiKZbbTSk8I4Y9ezJf5v58fqRQ6ossyb9OXZttOijAnnv4jhXymNrYeXOTB5_34EC0tTjK96rtl8_E104",
 				"type": "string"
 			}
 		]
@@ -347,9 +353,14 @@
 	],
 	"variable": [
 		{
-			"id": "1237f61f-83f9-47f7-addd-5dac5a5dc050",
+			"id": "c784c854-b5be-43a9-ad08-5defdce21ddc",
 			"key": "url",
 			"value": "92.222.76.5:8000/api"
+		},
+		{
+			"id": "9035cd55-cfa7-4cf0-adca-1e892036256d",
+			"key": "url2",
+			"value": "127.0.0.1:8000/api"
 		}
 	],
 	"protocolProfileBehavior": {}

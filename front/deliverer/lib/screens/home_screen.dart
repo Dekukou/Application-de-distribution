@@ -204,22 +204,25 @@ class MyContainer extends StatelessWidget {
             : this.planning['datas']['actual'] !=
                     this.planning['datas']['total']
                 ? new Container(
+                    height: double.infinity,
                     child: Column(
                       children: <Widget>[
-                        SizedBox(height: 30),
+                        SizedBox(height: 20),
                         _buildLogo(context),
                         SizedBox(height: 10),
                         Container(
                           padding: EdgeInsets.only(left: 20.0),
-                          child: Column(children: <Widget>[
-                            _myText("Livreur: ${planning['datas']['uid']}",
-                                16.0, Alignment.centerLeft),
-                          ]),
+                          child: Column(
+                            children: <Widget>[
+                              _myText("Livreur: ${planning['datas']['uid']}",
+                                  16.0, Alignment.centerLeft),
+                            ],
+                          ),
                         ),
-                        SizedBox(height: 60),
+                        SizedBox(height: 40),
                         _myText("${planning['datas']['package']}", 22.0,
                             Alignment.center),
-                        SizedBox(height: 60),
+                        SizedBox(height: 40),
                         _myText(
                             "X: ${planning['datas']['x']}; Y: ${planning['datas']['y']}",
                             18.0,
@@ -229,13 +232,14 @@ class MyContainer extends StatelessWidget {
                         Container(
                           padding: EdgeInsets.only(left: 30.0, right: 30.0),
                           child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                _myText("${planning['datas']['actual_dist']}",
-                                    18.0, Alignment.center),
-                                _myText("${planning['datas']['length']}", 18.0,
-                                    Alignment.center),
-                              ]),
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              _myText("${planning['datas']['actual_dist']}",
+                                  18.0, Alignment.center),
+                              _myText("${planning['datas']['length']}", 18.0,
+                                  Alignment.center),
+                            ],
+                          ),
                         ),
                         _myText(
                           "${planning['datas']['actual']} / ${planning['datas']['total']}",
@@ -256,13 +260,15 @@ class MyContainer extends StatelessWidget {
                         SizedBox(height: 10),
                         Container(
                           padding: EdgeInsets.only(left: 20.0),
-                          child: Column(children: <Widget>[
-                            _myText(
-                              "Livreur: ${planning['datas']['uid']}",
-                              16.0,
-                              Alignment.centerLeft,
-                            ),
-                          ]),
+                          child: Column(
+                            children: <Widget>[
+                              _myText(
+                                "Livreur: ${planning['datas']['uid']}",
+                                16.0,
+                                Alignment.centerLeft,
+                              ),
+                            ],
+                          ),
                         ),
                         SizedBox(height: 60),
                         _myText(
@@ -281,19 +287,20 @@ class MyContainer extends StatelessWidget {
                         Container(
                           padding: EdgeInsets.only(left: 30.0, right: 30.0),
                           child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                _myText(
-                                  "${planning['datas']['actual_dist']}",
-                                  18.0,
-                                  Alignment.center,
-                                ),
-                                _myText(
-                                  "${planning['datas']['length']}",
-                                  18.0,
-                                  Alignment.center,
-                                ),
-                              ]),
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              _myText(
+                                "${planning['datas']['actual_dist']}",
+                                18.0,
+                                Alignment.center,
+                              ),
+                              _myText(
+                                "${planning['datas']['length']}",
+                                18.0,
+                                Alignment.center,
+                              ),
+                            ],
+                          ),
                         ),
                         SizedBox(height: 20),
                         _myText(

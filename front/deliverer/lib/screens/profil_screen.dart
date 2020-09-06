@@ -77,6 +77,24 @@ void _showAlert(BuildContext context, text) {
           ));
 }
 
+Widget _myText(value, size, pos) {
+  return Align(
+    alignment: pos,
+    child: Container(
+      child: Text(
+        value,
+        style: TextStyle(
+          color: Colors.white,
+          letterSpacing: 1.5,
+          fontSize: size,
+          fontWeight: FontWeight.bold,
+          fontFamily: 'OpenSans',
+        ),
+      ),
+    ),
+  );
+}
+
 // Set App Background
 Widget _buildBackground() {
   return Container(
@@ -191,7 +209,7 @@ Widget _buildYZone(y) {
               border: InputBorder.none,
               contentPadding: EdgeInsets.only(top: 14.0),
               prefixIcon: Icon(Icons.location_on, color: Colors.white),
-              hintText: 'Entrez la coordonnée Y',
+              hintText: 'Y',
               hintStyle: kHintTextStyle),
         ),
       ),
@@ -295,6 +313,7 @@ class _ProfilScreenState extends State<ProfilScreen> {
   final yController = new TextEditingController();
   int _selectedIndex = 1;
   var user;
+  var uid = '';
 
   void _onItemTapped(int index) async {
     setState(() {
@@ -326,6 +345,7 @@ class _ProfilScreenState extends State<ProfilScreen> {
     print(res);
     setState(() {
       user = res['datas'];
+      uid = user['uid'];
       emailController.text = user['email'];
       xController.text = user['home'][0].toString();
       yController.text = user['home'][1].toString();
@@ -354,6 +374,8 @@ class _ProfilScreenState extends State<ProfilScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       _buildLogo(context),
+                      _myText(uid, 16.0, Alignment.centerLeft),
+                      SizedBox(height: 10),
                       _buildEmailZone(emailController),
                       SizedBox(height: 10),
                       _buildPasswordZone(),
