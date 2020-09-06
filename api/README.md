@@ -13,7 +13,7 @@ Mais à la place de prendre la solution la plus optimisée, j'ai décidé de cho
 
 ## INSTALL
 - ````composer install````
-- ````Création du .env avec les identifiants de la DB````
+- ````cp .env.example .env````
 
 ## RUN 
 - ````php artisan serve````
