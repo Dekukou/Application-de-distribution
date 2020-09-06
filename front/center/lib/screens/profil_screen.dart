@@ -25,7 +25,6 @@ void logout(context) async {
 
 // Fonction register
 void updateUser(context, email, x, y, password) async {
-  print(password.text);
   final prefs = await SharedPreferences.getInstance();
   final token = prefs.getString('token');
   if (password.text == "") {
@@ -37,7 +36,6 @@ void updateUser(context, email, x, y, password) async {
       },
       body: jsonEncode({'email': email.text, 'x': x.text, 'y': y.text}),
     );
-    print(response.statusCode);
     if (response.statusCode == 200) {
       var res = json.decode(response.body);
       _showAlert(context, "Success", res['message']);
@@ -59,7 +57,6 @@ void updateUser(context, email, x, y, password) async {
         'password': password.text
       }),
     );
-    print(response.statusCode);
     if (response.statusCode == 200) {
       var res = json.decode(response.body);
       _showAlert(context, "Success", res['message']);
@@ -83,7 +80,6 @@ void createPlanning(context) async {
   if (response.statusCode == 201) {
     var res = json.decode(response.body);
     _showAlert(context, "Succes", res['message']);
-    print("OK");
   } else {
     var res = json.decode(response.body);
     _showAlert(context, "Error", res['message']);
@@ -352,7 +348,6 @@ class _ProfilScreenState extends State<ProfilScreen> {
 
   void _onItemTapped(int index) async {
     setState(() {
-      print(index);
       _selectedIndex = index;
     });
     if (index == 0) {
@@ -369,7 +364,6 @@ class _ProfilScreenState extends State<ProfilScreen> {
   @override
   void initState() {
     _getUser();
-    print(emailController);
     return super.initState();
   }
 

@@ -1,8 +1,10 @@
 # Partie Front
 
-## Explication
+## Explications
 
-Étant donné que le choix des technologies est libre, j'ai choisi de partir sur du Flutter afin d'apprendre plus de choses sur ce langage et de réaliser un véritable projet dessus.
+Étant donné que le choix des technologies est libre, j'ai choisi de partir sur du Flutter afin d'apprendre plus de choses sur ce langage et de réaliser mon premier projet en PWA.
+
+/!\ Les applications peuvent se run sur un mobile ou un navigateur web.
 
 J'ai choisi de partir sur la création 2 applications distinctes. L'utilité de ces applications est décrite ci-dessous.
 
@@ -30,4 +32,6 @@ https://flutter.dev/docs/get-started/install
 
 `cd deliverer` ou `cd center`
 
-`flutter run`
+`flutter devices`
+
+`flutter run -d <device-id>`

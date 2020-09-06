@@ -30,10 +30,8 @@ void register(context) async {
       'role': '0'
     }),
   );
-  print(response.statusCode);
   if (response.statusCode == 201) {
     var res = json.decode(response.body);
-    print(res['data']['token']);
     final prefs = await SharedPreferences.getInstance();
     prefs.setString('token', res['data']['token']);
     Navigator.of(context).pushNamed('/home');

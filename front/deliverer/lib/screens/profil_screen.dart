@@ -36,7 +36,6 @@ void updateUser(context, email, x, y, password) async {
       },
       body: jsonEncode({'email': email.text, 'x': x.text, 'y': y.text}),
     );
-    print(response.statusCode);
     if (response.statusCode == 200) {
       var res = json.decode(response.body);
       _showAlert(context, res['message']);
@@ -58,7 +57,6 @@ void updateUser(context, email, x, y, password) async {
         'password': password.text
       }),
     );
-    print(response.statusCode);
     if (response.statusCode == 200) {
       var res = json.decode(response.body);
       _showAlert(context, res['message']);
@@ -317,7 +315,6 @@ class _ProfilScreenState extends State<ProfilScreen> {
 
   void _onItemTapped(int index) async {
     setState(() {
-      print(index);
       _selectedIndex = index;
     });
     if (index == 0) {
@@ -328,7 +325,6 @@ class _ProfilScreenState extends State<ProfilScreen> {
   @override
   void initState() {
     _getUser();
-    print(emailController);
     return super.initState();
   }
 
@@ -342,7 +338,6 @@ class _ProfilScreenState extends State<ProfilScreen> {
           "Authorization": 'Bearer ' + token
         });
     var res = json.decode(response.body);
-    print(res);
     setState(() {
       user = res['datas'];
       uid = user['uid'];

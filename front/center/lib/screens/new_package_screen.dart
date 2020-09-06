@@ -174,7 +174,6 @@ class _NewPackageScreenState extends State<NewPackageScreen> {
 
   void _onItemTapped(int index) async {
     setState(() {
-      print(index);
       _selectedIndex = index;
     });
     if (index == 0) {

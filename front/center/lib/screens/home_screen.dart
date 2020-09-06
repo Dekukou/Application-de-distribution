@@ -31,10 +31,8 @@ class Planning {
     var list = json['datas'] as List;
 
     if (json['count'] != 0) {
-      print(json['count']);
       resultsList = list.map((i) => Result.fromJson(i)).toList();
     } else {
-      print(json['count']);
       resultsList = null;
     }
 
@@ -113,7 +111,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _onItemTapped(int index) async {
     setState(() {
-      print(index);
       _selectedIndex = index;
     });
     if (index == 1) {
@@ -145,7 +142,6 @@ class _HomeScreenState extends State<HomeScreen> {
       },
     );
     var res = json.decode(response.body);
-    print(res['message']);
     setState(() {
       datas = res;
     });

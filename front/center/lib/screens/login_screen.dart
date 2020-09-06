@@ -28,7 +28,6 @@ void login(context) async {
 
   if (response.statusCode == 201) {
     var res = json.decode(response.body);
-    print(res['token']);
     final prefs = await SharedPreferences.getInstance();
     prefs.setString('token', res['token']);
     Navigator.of(context).pushNamed('/home');
