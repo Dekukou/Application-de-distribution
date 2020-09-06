@@ -30,6 +30,7 @@ Route::group(["middleware" => "auth:api"], function() {
 	Route::put("chooseDeliverer", "UserController@dispoDeliveryMan");
 	Route::put("choosePackage", "PackageController@choosePackage");
 	Route::get("createPlanning", "PackageController@createPlanning");
+	Route::get("createPlanningOpti", "PackageController@createPlanningOpti");
 	Route::get("planning", "PackageController@getUserPlanning");
 	
 });

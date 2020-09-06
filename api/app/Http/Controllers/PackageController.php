@@ -201,6 +201,80 @@ class PackageController extends Controller
     	], 200);
     }
 
+    public function createPlanningOpti() {
+        $user = Auth::user();
+
+        if ($user->role !== '1') {
+            return response()->json([
+                "message" => "Unauthorized"
+            ], 401);
+        }
+
+        $packages = Package::inRandomOrder()->select('pos', 'uid')->where([['todo', '=', true]])->get();
+        
+        foreach ($packages as $package) {
+            UserPackage::where([['package_uid', '=', $package['uid']], ['done', '=', false]])->delete();
+        }
+
+        $mailmens = User::inRandomOrder()->select('uid', 'home')->where([['role', '=', '0'], ['dispo', '=', true]])->get();
+
+        if (count($mailmens) == 0) {
+            return response()->json([
+                "message" => "Aucun livreur sélectionné"
+            ], 400);
+        }
+
+        if (count($packages) == 0) {
+            return response()->json([
+                "message" => "Aucun colis sélectionné"
+            ], 400);
+        }
+
+        if (count($mailmens) > count($packages)) {
+            return response()->json([
+                "message" => "Nombre de livreur supérieur au nombre de colis"
+            ], 400);
+        }
+
+        $space = intdiv(count($packages), count($mailmens));
+        $mod = fmod(count($packages), count($mailmens));
+
+        $loop = ($mod > 0) ? $space + 1 : $space;
+        for ($i = 0; $i < $loop; $i++) { 
+            foreach ($mailmens as $mailmen) {
+                if ($mailmen['bool'] == true) {
+                    if (!empty($packages)) {
+                        $tmp = $this->sortDistance($packages, $mailmens[$i]['last']);
+                        if ($this->calcDistanceTotal($tmp[0][1]['pos'], $mailmen['last'], $mailmen['home']) + $mailmen['length'] <= 240) {
+                            $mailmen['last'] = $tmp[0][1]['pos'];
+                            $this->linkUserPackage($mailmen, $tmp[0]);
+                            $tmp2 = $mailmen['tour'];
+                            array_push($tmp2, $tmp[0][1]['uid']);
+                            $mailmen['tour'] = $tmp2;
+                            $mailmen['length'] += $this->calcDistance($tmp[0][1]['pos'], $mailmen['last']);
+                            unset($tmp[0]);
+                            $packages = $tmp;
+                        } else {
+                            $mailmen['bool'] = false;
+                        }
+                    }
+                }
+            }
+        }
+
+        foreach ($mailmens as $mailmen) {
+            $mailmen['length'] += $this->calcDistance($mailmen['home'], $mailmen['last']);
+            unset($mailmen['home']);
+            unset($mailmen['last']);
+            unset($mailmen['bool']);
+        }
+
+        return response()->json([
+            "message" => "Ok",
+            "datas" => $mailmens
+        ], 201);
+    }
+
     public function createPlanning() {
     	$user = Auth::user();
 
@@ -216,7 +290,7 @@ class PackageController extends Controller
 	    	UserPackage::where([['package_uid', '=', $package['uid']], ['done', '=', false]])->delete();
     	}
 
-    	$mailmens = User::inRandomOrder()->select('uid', 'home')->where([['role', '=', '0'], ['dispo', '=', true]])->get();
+    	$mailmens = User::inRandomOrder()->select('uid', 'home', 'home as last')->where([['role', '=', '0'], ['dispo', '=', true]])->get();
 
     	if (count($mailmens) == 0) {
     		return response()->json([
@@ -250,7 +324,7 @@ class PackageController extends Controller
     			if ($mailmen['bool'] == true) {
     				if (!empty($packages)) {
 	    				$tmp = $this->sortDistance($packages, $mailmens[$i]['last']);
-	    				if ($this->calcDistanceTotal($tmp[0][1]['pos'], $mailmen['last'], $mailmen['home']) + $mailmen['length'] <= 240) {
+	    				if ($this->calcDistanceTotal($tmp[0][1]['pos'], $mailmen['last'], [0, 0]) + $mailmen['length'] <= 240) {
 	    					$mailmen['last'] = $tmp[0][1]['pos'];
     						$this->linkUserPackage($mailmen, $tmp[0]);
 	    					$tmp2 = $mailmen['tour'];
@@ -268,7 +342,8 @@ class PackageController extends Controller
     	}
 
     	foreach ($mailmens as $mailmen) {
-    		$mailmen['length'] += $this->calcDistance($mailmen['home'], $mailmen['last']);
+    		$mailmen['length'] += $this->calcDistance([0, 0], $mailmen['last']);
+            $mailmen['tour'] = array_reverse($mailmen['tour']);
     		unset($mailmen['home']);
     		unset($mailmen['last']);
     		unset($mailmen['bool']);
