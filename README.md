@@ -1,4 +1,4 @@
-# Exercice technique - Infomaniak (FullStack)
+# Application de distribution
 
 ## Technologies utilisées
 
